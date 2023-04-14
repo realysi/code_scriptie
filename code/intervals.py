@@ -1,17 +1,14 @@
 import datetime
-from reading_data_voorbeelden import read_audio_data, read_video_data
+from .reading_data_voorbeelden import read_data
+import pandas as pd
 
-def one_minute(link_audio_data):
-    audio_df = read_audio_data(link_audio_data)
-    audio_df["Tijd begin detectie"] #
+def time_to_seconds(link_audio_data):
+    audio_df: pd.DataFrame = read_data(link_audio_data)
+    print(audio_df)
+    for i in audio_df.index:
+        time = audio_df.loc[i, "Tijd begin detectie"]
+        hours, minutes, seconds = time.split(":")
+        total_seconds = int(datetime.timedelta(hours=int(hours),minutes=int(minutes),seconds=int(seconds)).total_seconds())
+        audio_df.loc[i, "Tijd begin detectie"] = total_seconds
+    return audio_df
 
-b = a[["ID", "Tijd begin detectie"]]
-print(b)
-print("\n\n")
-#print(b.loc[1])
-
-tijd = b.loc[0, "Tijd begin detectie"]
-print(tijd)
-print(tijd)
-print(type(tijd))
-#b.loc[0, "Tijd begin detectie"] = tijd + 5
