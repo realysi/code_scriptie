@@ -1,5 +1,5 @@
 from code.read_data import read_xlsx
-from code.classes.data import Data
+from classes.dataframe_extension import Data
 import datetime
 import pandas as pd
 

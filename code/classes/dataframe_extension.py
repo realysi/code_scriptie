@@ -3,15 +3,12 @@ import datetime
 import pytz
 
 """
-Class to store data from files. It stores its data in a pandas dataframe.
+Class to add functions to pandas dataframe
 """
 
-class Data:
+class Dataframe:
     def __init__(self, dataframe):
         self.df: pd.DataFrame = dataframe
-        self.id = []
-        self.data_type = ""
-        self.name = ""
     
     def select_rows_by_columnvalue(self, columnname, columnvalue):
         """
