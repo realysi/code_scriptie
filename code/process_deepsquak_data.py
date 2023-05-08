@@ -16,20 +16,20 @@ def id_names(path_folder):
     id_names = list(set(id_names))
     return id_names #not sorted on number
 
-def data_in_dict(path_folder):
-    names_id = id_names(path_folder)
-    files: list = csv_filenames(path_folder)
+def deepsquakfiledata_to_dict(path_folder) -> dict:
+    names_id = id_names(path_folder) #['artis_26_audio1', 'artis_19_audio1', etc]
+    files: list = csv_filenames(path_folder) #['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]
     data = {}
     for name in names_id:
         filenames_with_id = []
         for file in files:
             if name in file:
                 filenames_with_id.append(file)
-        data.update({name: filenames_with_id})
-
+        data.update({name: filenames_with_id}) #{'artis_26_audio1': ['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]}
     return data
     
     for h in data:
        print(f"key: {h}, values: {data[h]} \n\n")
+
 
 "4 mei: vandaag: - code opgeschoond, agouti data nu in dictionary, deepsquak files begin daaraan (files kunnen worden ingelezen)"
