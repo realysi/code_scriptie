@@ -2,26 +2,42 @@ from code.classes.dataframe_extension import Dataframe
 from code.read_data import read_csv
 import pandas as pd
 
+"""
+This programm summarized:
+Agouti (neural network) processes wildlife camera data and returns 3 csv files: media.csv, observations.csv and deployments.csv
+observations.csv contains 
+"""
 unfiltered_observations = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Agouti/Artis/observations.csv"
 unfiltered_media = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Agouti/Artis/media.csv"
 
-def process_observation_data(path: str) -> str:
+def process_observation_data(path_observation_csv: str) -> str:
     """
     processes the data of the observation sheet by filtering on Rattus norvegic, keeping relevant columns, adding UTC
     and epoch time to dataset and finally writing a new csv file containing all this processed data.
     """
-    data = read_csv(path)
-    data.keep_relevant_columns(['sequenceID', 'timestamp', 'scientificName'])
+    data = read_csv(path_observation_csv)
+    data.keep_relevant_columns(['deploymentID', 'sequenceID', 'scientificName', 'timestamp'])
     data.select_rows_by_columnvalue(columnname='scientificName', columnvalue='Rattus norvegicus')
     data.add_utc(columnname_timestamp='timestamp') 
-    data.add_epoch(columnname_timestamp='utc')
-    data.interval(columnname_timestamp='epoch', interval_minutes=2)
-    path_filtered_results = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/filtered_observation.csv"
-    data.df.to_csv(path_filtered_results)
-    return path_filtered_results
+    data.add_epoch(columnname_timestamp='UTC timestamp')
+    #data.interval(columnname_timestamp='epoch', interval_minutes=2)
+    path_filtered_observations = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/filtered_observation.csv"
+    data.df.to_csv(path_filtered_observations, index=False)
+    return path_filtered_observations
 
+def link_to_deployments(path_filtered_observation, path_deployments):
+    pass
 
-def link_observation_media(path_filtered_observations: str, path_media: str) -> Dataframe:
+def deployments(path_deploysments_csv, path_filtered_observations):
+    data = read_csv(path_deploysments_csv)
+    data.keep_relevant_columns(['deploymentID', 'longitude', 'latitude', 'locationName', 'cameraID'])
+    data_observation = read_csv(path_filtered_observations)
+    data_observation.pair_sheets_by_columnvalue(data, "deploymentID", ['longitude', 'latitude', 'locationName', 'cameraID'])
+    path_deployments_linked = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/deployments_linked.csv"
+    data_observation.df.to_csv(path_deployments_linked, index=False)
+    return path_deployments_linked
+
+def link_observation_media(path_filtered_observations: str, path_media: str) -> str:
     """
     links the data of the observation sheet to that of the media sheet. The media sheet gets searched by the sequenceID
     to find the relevant filename, which contains information about the ID of the camera. The data gets written to a new csv file.
@@ -30,7 +46,10 @@ def link_observation_media(path_filtered_observations: str, path_media: str) -> 
     data_media.keep_relevant_columns(['sequenceID', 'fileName'])
     data_observations = read_csv(path_filtered_observations)
     data_observations.pair_observations_media(data_media)
-    return data_observations
+    path_linked_media_observations = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/linked_media&observations_.csv"
+    data_observations.df.to_csv(path_linked_media_observations, index=False)
+    return path_linked_media_observations
+
 
 
 def add_id_name(linked_data: Dataframe) -> Dataframe:

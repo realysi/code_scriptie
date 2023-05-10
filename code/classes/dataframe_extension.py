@@ -32,7 +32,7 @@ class Dataframe:
             datetime_object = pytz.timezone('Europe/Amsterdam').localize(datetime_object)
             datetime_object = datetime_object.astimezone(pytz.utc)
             times.append(datetime_object)
-        self.df.insert(len(self.df.columns), "utc", times)
+        self.df.insert(len(self.df.columns), "UTC timestamp", times)
             #self.df.loc[i, columnname_timestamp] = datetime_object #change hh:mm:ss to total seconds in the df  
         return self
     
@@ -86,6 +86,30 @@ class Dataframe:
             filename_firstrow = first_row.loc['fileName']
             filenames.append(filename_firstrow)
         self.df.insert(len(self.df.columns), "fileName", filenames)
+        return self.df
+
+    def pair_sheets_by_columnvalue1(self, data_other_sheet):
+        filenames = []
+        for i in self.df.index:
+            deploymentID = self.df.loc[i, 'deploymentID']
+            rows: pd.DataFrame = data_other_sheet.df.loc[data_other_sheet.df['depolymentID'] == deploymentID]
+            """first_row = rows.iloc[0]
+            filename_firstrow = first_row.loc['fileName']
+            filenames.append(filename_firstrow)"""
+            longitude = rows.loc['longitude']
+        self.df.insert(len(self.df.columns), "fileName", filenames)
+        return self.df
+
+    def pair_sheets_by_columnvalue(self, data_other_sheet, matching_columnname, desired_columnnames: list[str]): 
+        for j in desired_columnnames:
+            data = []
+            for i in self.df.index:
+                cellvalue_mathcincolumnname = self.df.loc[i, matching_columnname]
+                rows: pd.DataFrame = data_other_sheet.df.loc[data_other_sheet.df[matching_columnname] == cellvalue_mathcincolumnname]
+                first_row = rows.iloc[0]
+                cell_value_firstrow = first_row.loc[j]
+                data.append(cell_value_firstrow)
+            self.df.insert(len(self.df.columns), j, data)
         return self.df
 
     def __repr__(self):
