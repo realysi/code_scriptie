@@ -1,6 +1,8 @@
 import pandas as pd
 import datetime
 import pytz
+from calendar import monthrange
+
 
 """
 Class to add functions to pandas dataframe
@@ -17,7 +19,7 @@ class Dataframe:
         self.df = self.df.loc[self.df[columnname] == columnvalue]
         return self
     
-    def add_utc(self, columnname_timestamp):
+    def add_utc(self, columnname_timestamp, location_data: str):
         """
         Turns the time from localized Amsterdam time to UTC time.
         """
@@ -29,11 +31,20 @@ class Dataframe:
             year, month, day = date.split("-") #format in xlsx is d/m/y but it became y-m-d ??
             hours, minutes, seconds = time.split(":")
             datetime_object: datetime.datetime = datetime.datetime(year=int(year), month=int(month), day=int(day), hour=int(hours), minute=int(minutes), second=int(seconds))
-            datetime_object = pytz.timezone('Europe/Amsterdam').localize(datetime_object)
-            datetime_object = datetime_object.astimezone(pytz.utc)
+            if location_data.lower() == 'artis':
+                datetime_object = pytz.timezone('Europe/Amsterdam').localize(datetime_object)
+                datetime_object = datetime_object.astimezone(pytz.utc)
+            else:
+                if int(hours) - 1 < 0:
+                    if int(day) - 1 == 0:
+                        num_days = monthrange(int(year), int(month) - 1)[1] # num_days = 28
+                        datetime_object = datetime_object.replace(month= int(month) - 1, day=num_days, hour=23)
+                    else:
+                        datetime_object = datetime_object.replace(day=int(day) - 1, hour=23)
+                else:
+                    datetime_object = datetime_object.replace(hour=int(hours) -1)
             times.append(datetime_object)
         self.df.insert(len(self.df.columns), "UTC timestamp", times)
-            #self.df.loc[i, columnname_timestamp] = datetime_object #change hh:mm:ss to total seconds in the df  
         return self
     
     def keep_relevant_columns(self, columnnames: list[str]):
