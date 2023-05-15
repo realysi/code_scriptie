@@ -1,6 +1,6 @@
-from code.process_agouti_data import data_agouti, agoutidata_to_dict, process_observation_data
-from code.process_deepsquak_data import deepsquakfiledata_to_dict
-from code.agouti_deepsquak import overlapping_id, overlap_time
+from code.agouti import data_aougti_test
+from code.deepsqueak import deepsquakfiledata_to_dict
+from code.overlaps import overlapping_id, overlap_time, epoch_timestamps_deepsqueak, timestamps_overlaps
 
 path = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/artis_csv'
 linked_data = "/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/linked_results.csv"
@@ -16,9 +16,14 @@ id_names(artis_folder)"""
 
 #path = data_agouti(path_observations=flevopark_observations, path_media=flevopark_media, path_deployments=flevopark_deployments, location_dataset='flevopark')
 path = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/flevopark+mediadata.csv'
-agouti_data = agoutidata_to_dict(path)
+agouti_data = data_aougti_test(path)
+
 deepsqueak_data = deepsquakfiledata_to_dict('/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/flevopark_csv')
-overlap_time(agouti_data, deepsqueak_data)
+#ids = overlapping_id(agouti_data, deepsqueak_data)
+epoch_timestamps_deepsqueak(agouti_data, deepsqueak_data)
+timestamps_overlaps(agouti_data, deepsqueak_data)
+
+#overlap_time(agouti_data, deepsqueak_data)
 #data_in_dict(artis_folder)
 #agoutidata = agoutidata_to_dict(linked_data) #{ID: pd.Dataframe}
 #deepsquakfiledata = deepsquakfiledata_to_dict(artis_folder_deepsquak) #{ID: [filename, filename]}

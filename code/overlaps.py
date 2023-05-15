@@ -10,6 +10,9 @@ deepsquakfiledata = deepsquakfiledata_to_dict(flevopark_folder_deepsqueak) #{ID:
 
 #Step 1: check if they have same ID, if so put that id in a list
 def overlapping_id(dict_agouti: dict, dict_deepsquak: dict):
+    """
+    check which IDs the agouti- and deepsqueakdata share, return those IDs.
+    """
     dict_agouti_keys = list(dict_agouti.keys())
     dict_deepsquak_keys = list(dict_deepsquak.keys())
     overlapping_ids = []
@@ -17,6 +20,47 @@ def overlapping_id(dict_agouti: dict, dict_deepsquak: dict):
         if i in dict_deepsquak_keys:
             overlapping_ids.append(i)
     return overlapping_ids #['artis_26', 'artis_22', 'artis_24', 'artis_18', 'artis_20', 'artis_21', 'artis_19', 'artis_27']
+
+def epoch_timestamps_deepsqueak(dict_agouti, dict_deepsqueak):
+    ids = overlapping_id(dict_agouti, dict_deepsqueak)
+    timestamps_id = {}
+    for i in ids: 
+        filenames_deepsquak: list[str] = dict_deepsqueak[f"{i}"] #[f"{i}_audio1"] for artis ['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]
+        epoch_timestamps_deepsquak = []
+        for file in filenames_deepsquak:
+            timestamp = file.split('audio1_')[1]
+            timestamp = timestamp.split("_(")[0]
+            date, time = timestamp.split('_')
+            year, month, day = date.split("-")
+            hours, minutes, seconds = time.split("-")
+            datetime_object: datetime.datetime = datetime.datetime(year=int(year), month=int(month), day=int(day), hour=int(hours), minute=int(minutes), second=int(seconds))
+            epoch = datetime_object.timestamp()
+            epoch_timestamps_deepsquak.append(epoch)
+        timestamps_id.update({i: epoch_timestamps_deepsquak})
+    return timestamps_id
+
+def timestamps_overlaps(dict_agouti, dict_deepsqueak):
+    overlaps = {}
+    epoch_timestamps: dict = epoch_timestamps_deepsqueak(dict_agouti, dict_deepsqueak)
+    for i in epoch_timestamps.keys():
+        timestamps_id_data = []
+        rows_agouti = dict_agouti[f"{i}"] #for artis [f"{i}_wildlifecamera1"
+        epoch_timestamps_agouti = rows_agouti['epoch'].tolist() #all unique id names
+        deepsqueak_timestamps_id = epoch_timestamps[i]
+        for j in deepsqueak_timestamps_id:
+            starttime = j
+            aprox_endtime = starttime + 10000
+            for h in epoch_timestamps_agouti:
+                if h >= starttime and h <= aprox_endtime:
+                    print(f"ID: {i}, timestamp: {h}")
+                    timestamps_id_data.append(h)
+        overlaps.update({i: timestamps_id_data})
+    return overlaps #{id: [timestamps with potential overlaps (so agouti timestamps)]}
+    print(overlaps)
+
+def overlaps(j):
+    pass
+
 
 #step 2: check if times overlap (HEELLLL veel gedoe), als het binnen 10.000 seconden van elkaar zit(deepsquak) --> overlappend!
 def overlap_time(dict_agouti, dict_deepsquak):
@@ -54,7 +98,3 @@ def overlap_time(dict_agouti, dict_deepsquak):
     print(f"Total shared observations: {total}")
         #2 minuten tijdinterval nog in verwerken
     #agouti timestamps
-
-
-def overlaps():
-    pass
