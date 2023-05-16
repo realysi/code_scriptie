@@ -1,20 +1,14 @@
 
 # Detectability of camera traps vs autonomous acoustic recorders for the Rattus norvegicus in urban environments: *a methodological study comparing two passive monitoring techniques*.
-Bachelorthesis Yanick Idsinga, University of Amsterdam  
-Institute for Biodiversity and Ecosystem Dynamics, Theoretical and computational ecology (IBED-TCE)  
+> ### Bachelorthesis Yanick Idsinga, University of Amsterdam
+> #### Institute for Biodiversity and Ecosystem Dynamics, Theoretical and computational ecology (IBED-TCE)  
+> Supervisor: DR. IR. E.E. (Emiel) van Loon  
+> Examinator: C.E. (Caitlin Emily) Black
 
-Supervisor: DR. IR. E.E. (Emiel) van Loon  
-Examintor: C.E. (Caitlin Emily) Black
-
-
-1b. Daily supervisor:
-Name, first name, title(s): DR. IR. E.E. (Emiel) van Loon
-Institution: Institute for Biodiversity and Ecosystem Dynamics (IBED) Department: Theoretical and computational ecology
-
-### Introduction (abstract scriptie)
+## Introduction (abstract scriptie)
 Brown rats (Rattus norvegicus) are considered pests in urban environments. They cause structural damage, spoil food, have a negative impact on citizens and are a source of several zoonotic pathogens. With the increasing urbanization, regulating rodent population is only becoming more important. To draft and/or control regulating measures a lot should be known about the rat such as behaviour, occupancy, abundance, density and much more. Studying the brown rat is however difficult as the animal is nocturnal and notoriously difficult to observe. Trapping of the rat has been proven difficult as well. A good solution is the use of passive monitoring methods, with the camera trap and acoustic recorder being the most popular. Camera traps with passive infrared sensors, which are the standard, are known to sometimes miss a weaker heat signal from smaller animals. In addition, camera traps sample a relatively small area. Acoustic recorders, in comparison, record continuously and have a larger sampling area but are dependent on detectable vocalization made by wildlife. This research will compare the detectability from camera traps and acoustic recorders for the brown rat. This will be done by using data of 13 locations where camera traps and acoustic recorders were placed together in the Flevopark. The detectability will be compared by calculating 1) the chance of spotting rats on the camera trap, when the acoustic recorder made a detection 2) the chance of hearing a rat from the acoustic recorder, when the camera trap made a detection. The method with the highest chance to be picked up as well during a detection of the other method has the better detectability.
 
-15 mei: timestamps overlap flevopark gevonden, data mangement, literatuur 
+## Table of contents
 
 # agouti.py
 ## data structure
