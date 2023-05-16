@@ -45,7 +45,6 @@ The deepsqueak software analyses .flac files for sound made by the Rattus norveg
 ## data processing
 Python can't import the multristructure arrays that the .mat files make use of. The .mat files in the data/Deepsquak/20220202 get converted to .csv files by the use of a matlab script called matlab_script, which can also be found in the folder data/Deepsquak/20220202. 
 
+<img width="473" alt="Screenshot 2023-05-16 at 14 22 57" src="https://github.com/realysi/code_scriptie/assets/116087413/39c4d369-1fe7-47de-a879-c68cad0ec331">
 
 
-
-artis_16_audio1_2021-11-11_16-00-00_(0) 2022-12-13  3_45 PM.mat
