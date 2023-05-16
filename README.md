@@ -33,3 +33,11 @@ The data of the above steps gets saved in a dictionary by {locationName (flevopa
 ## data structure
 
 The deepsqueak software analyses .flac files for sound made by the Rattus norvegicus. The software returns a .mat file which contains three sheets; audiodata, Calls and detection_metadeta. The audiodata sheet contains information about the folowing; Filename, CompresiionM..., NumChannels, SampleRate, TotalSamples, Duraiton, Titile, Comment, Arits (type audiotrap) and BitsPerSample. None of this information is used in this program. The Calls data sheet contains the following information; how many seconds since the start of the recording a 'detectable sound' was made, the lowest frequency of that soundwave, the duration of the sound, the delta of the frequency (lowest + delta = highest), confidence score given by deepsqueak, type and accept. The detection_metadata datasheet contains seeints, start detectiontime, networkselections. The netwerkselection is which neural network has graded the audio data. 
+
+<img width="812" alt="Screenshot 2023-05-08 at 18 50 38" src="https://github.com/realysi/code_scriptie/assets/116087413/fbf641b7-57b5-46d2-ba93-622bd60885d4">
+
+<img width="550" alt="Screenshot 2023-05-08 at 18 51 22" src="https://github.com/realysi/code_scriptie/assets/116087413/8b4c97fa-3a8a-4dca-8ec9-98fdbfc5b739">
+
+<img width="561" alt="Screenshot 2023-05-08 at 18 51 39" src="https://github.com/realysi/code_scriptie/assets/116087413/d969bff9-fa6c-4e7a-b45b-29a94deb4295">
+
+<img width="418" alt="Screenshot 2023-05-08 at 18 52 21" src="https://github.com/realysi/code_scriptie/assets/116087413/40222db6-ba5a-451f-aa4a-aceac957c4cc">
