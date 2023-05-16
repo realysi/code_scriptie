@@ -9,5 +9,5 @@ deployments.csv contains: deploymentID, longitude, latitude, locationName and ca
 
 pictures of the three csv files, with their data
 
-![Image alt text](/Users/yanickidsinga/Documents/Screenshots/Schermafbeelding\ 2022-10-02\ om\ 13.13.23.png )
+![image](https://github.com/realysi/code_scriptie/assets/116087413/1f5c99b4-ff34-4c38-bf8e-1c82df6b1d10)
 
