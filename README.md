@@ -13,4 +13,4 @@ pictures of the three csv files, with their data
 
 ![image](https://github.com/realysi/code_scriptie/assets/116087413/1f5c99b4-ff34-4c38-bf8e-1c82df6b1d10)
 
-<img width="694" alt="Screenshot 2023-05-16 at 10 55 45" src="https://github.com/realysi/code_scriptie/assets/116087413/7e1bb8da-6649-459f-81b1-a0f849254560">
+<img width="495" alt="Screenshot 2023-05-16 at 12 48 09" src="https://github.com/realysi/code_scriptie/assets/116087413/272e9515-e832-4691-8020-67c23ae91b43">
