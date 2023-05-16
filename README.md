@@ -1,8 +1,9 @@
 # Scriptie program
 
-# Agouti.py
-This file processes the data received by the agouti (neural network). The agouti software scans wildlifecamera images for sightings of animals, and labels these. It returns three csv files containing usable information: observations.csv, media.csv and deployments.csv. 
+# agouti.py
+This file processes the data received by the agouti (neural network). The agouti software scans wildlifecamera images for sightings of animals, and labels these. It returns three csv files containing usable information: observations.csv, media.csv and deployments.csv. All three data sheets contain usefull information for this program, which this program links together.
 
+The datasheets are connected with one another by the form of IDs
 observations.csv contains: deploymentID, sequenceID, scientificName and to the second exact timestamp.
 media.csv contains: sequenceID and fileName.
 deployments.csv contains: deploymentID, longitude, latitude, locationName and cameraID.
