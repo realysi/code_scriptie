@@ -1,5 +1,5 @@
 from code.agouti import data_aougti_test, data_agouti_final #at the end of project, remove data_agouti_test and rename _final to just data_agouti
-from code.deepsqueak import deepsquakfiledata_to_dict
+from deepsqueak_files import deepsquakfiledata_to_dict
 import datetime
 
 path = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/artis_csv'
@@ -64,3 +64,20 @@ def overlap_time(dict_agouti, dict_deepsquak):
     print(f"Total shared observations: {total}")
         #2 minuten tijdinterval nog in verwerken
     #agouti timestamps
+
+
+
+def add_id_name(linked_data: Dataframe) -> Dataframe:
+    """
+    Adds ID column to data
+    This functions only gets used for the Artis files, as those do not have relevant information in the locationName column
+    """
+    all_id_names = []
+    for i in linked_data.df.index:
+        name = str(linked_data.df.loc[i, 'fileName'])
+        if 'wildlifecamera1' in name:
+            name = name.split("_202")[0]
+            name = name.split("-")[1]
+        all_id_names.append(name)
+    linked_data.df.insert(len(linked_data.df.columns), "ID", all_id_names)
+    return linked_data

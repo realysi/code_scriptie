@@ -4,17 +4,6 @@ import pandas as pd
 
 """
 This is not set for processing the data of flevopark only (doesn't use ID but locationName)!!!
-
-Agouti (neural network) processes wildlife camera data and returns 3 csv files: media.csv, observations.csv and deployments.csv
-observations.csv contains: 'deploymentID', 'sequenceID', 'scientificName', 'timestamp'
-media.csv contains: sequenceID, fileName
-deployments.csv contains: 'deploymentID', 'longitude', 'latitude', 'locationName', 'cameraID'
-
-Steps of the program:
-1. observation data gets filtered; Drops all but the 'deploymentID', 'sequenceID', 'scientificName', 'timestamp' columns
-, adds column where the timestamp gets converted to UTC and epoch time --> result gets written to csv file to work further with (and save in case of data loss)
-2. data of deployments.csv gets added to filtered observations data (New columns = 'longitude', 'latitude', 'locationName', 'cameraID')
-3. 
 """
 
 def process_observation_data(path_observation_csv: str, location_dataset: str) -> str:
@@ -26,9 +15,9 @@ def process_observation_data(path_observation_csv: str, location_dataset: str) -
     data: Dataframe = read_csv(path_observation_csv)
     data.keep_relevant_columns(['deploymentID', 'sequenceID', 'scientificName', 'timestamp'])
     data.select_rows_by_columnvalue(columnname='scientificName', columnvalue='Rattus norvegicus')
-    data.add_utc(columnname_timestamp='timestamp', location_data=location_dataset) 
+    data.add_utc(columnname_timestamp='timestamp', location_data=location_dataset, desired_name_column='UTC timestamp') 
     data.add_epoch(columnname_timestamp='UTC timestamp')
-    path_filtered_observations = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/{location_dataset}_filtered_observation.csv"
+    path_filtered_observations = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/filtered/observations_{location_dataset}.csv"
     data.df.to_csv(path_filtered_observations, index=False)
     return path_filtered_observations
 
@@ -42,7 +31,7 @@ def add_deployment_data(path_deploysments: str, path_filtered_observations: str,
     data.keep_relevant_columns(['deploymentID', 'longitude', 'latitude', 'locationName', 'cameraID'])
     data_observation = read_csv(path_filtered_observations)
     data_observation.pair_sheets_by_columnvalue(data, "deploymentID", ['longitude', 'latitude', 'locationName', 'cameraID'])
-    path_deployments_linked = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/{location_dataset}_+deploymentdata.csv"
+    path_deployments_linked = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/filtered/+deploymentdata_{location_dataset}.csv"
     data_observation.df.to_csv(path_deployments_linked, index=False)
     return path_deployments_linked
 
@@ -57,10 +46,27 @@ def add_media_data(path_media: str, path_addeddeployment: str, location_dataset)
     data_media.keep_relevant_columns(['sequenceID', 'fileName'])
     data_observations = read_csv(path_addeddeployment)
     data_observations.pair_sheets_by_columnvalue(data_media, 'sequenceID', ['fileName'])
-    #data_observations.pair_observations_media(data_media)
-    path_linked_media_observations = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/{location_dataset}+mediadata.csv"
+    path_linked_media_observations = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/final/data_{location_dataset}.csv"
+    data_observations.df = data_observations.df.sort_values('locationName')
     data_observations.df.to_csv(path_linked_media_observations, index=False)
     return path_linked_media_observations
+
+
+def total_runningtime(path_deployments, location_dataset):
+    """
+    Calculates how much time (seconds) every camera recorderd (still got to add for the same locaitons) and displays the dates at which
+    it recorded. Writes the data to a csv file.
+    """
+    data_deployments = read_csv(path_deployments)
+    data_deployments.keep_relevant_columns(['deploymentID', 'start', 'end', 'locationName', 'longitude', 'latitude'])
+    data_deployments.df = data_deployments.df.dropna()
+    data_deployments.add_utc('start', location_data="flevopark", desired_name_column='start_utc')
+    data_deployments.add_utc('end', location_data="flevopark", desired_name_column='end_utc')
+    data_deployments.calculate_difference_datetime('start_utc', 'end_utc', 'running_time(sec)')
+    data_deployments.keep_relevant_columns(['deploymentID', 'start_utc', 'end_utc', 'locationName', 'running_time(sec)', 'longitude', 'latitude' ])
+    data_deployments.df = data_deployments.df.sort_values('locationName')
+    path_running_times = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/runtime/runtime_{location_dataset}.csv"
+    data_deployments.df.to_csv(path_running_times, index=False)
 
 
 def filter_data_agouti(path_observations: str, path_media: str, path_deployments: str, location_dataset: str) -> str:
@@ -68,10 +74,11 @@ def filter_data_agouti(path_observations: str, path_media: str, path_deployments
     Contains functions above.
     filters observations data, links observation and media data and writes it to new csv file.
     """
-    filtered_observations = process_observation_data(path_observations, location_dataset)
-    add_deploymentdata = add_deployment_data(path_deployments, filtered_observations, location_dataset)
-    add_mediadata = add_media_data(path_media, path_addeddeployment=add_deploymentdata, location_dataset=location_dataset)
-    return add_mediadata
+    filtered_observations_path = process_observation_data(path_observations, location_dataset)
+    add_deploymentdata_path = add_deployment_data(path_deployments, filtered_observations_path, location_dataset)
+    add_mediadata_path = add_media_data(path_media, path_addeddeployment=add_deploymentdata_path, location_dataset=location_dataset)
+    total_runningtime(path_deployments, location_dataset)
+    return add_mediadata_path
 
 
 def agoutidata_to_dict(path: str): #wordt data: Dataframe maar nu even tijd besparen
@@ -90,9 +97,10 @@ def agoutidata_to_dict(path: str): #wordt data: Dataframe maar nu even tijd besp
     return dict_data
 
 
-def data_agouti_final(path_observations: str, path_media: str, path_deployments: str, location_dataset: str):
+def data_agouti(path_observations: str, path_media: str, path_deployments: str, location_dataset: str):
     """
     Main functions of this file
+    Filters the agouti data, writes csv file with specific information that can be used later on
     """
     path = filter_data_agouti(path_observations, path_media, path_deployments, location_dataset)
     data = agoutidata_to_dict(path)
@@ -103,21 +111,3 @@ def data_aougti_test(path_filtered_data):
     data = agoutidata_to_dict(path_filtered_data)
     return data
 
-
-
-
-
-def add_id_name(linked_data: Dataframe) -> Dataframe:
-    """
-    Adds ID column to data
-    This functions only gets used for the Artis files, as those do not have relevant information in the locationName column
-    """
-    all_id_names = []
-    for i in linked_data.df.index:
-        name = str(linked_data.df.loc[i, 'fileName'])
-        if 'wildlifecamera1' in name:
-            name = name.split("_202")[0]
-            name = name.split("-")[1]
-        all_id_names.append(name)
-    linked_data.df.insert(len(linked_data.df.columns), "ID", all_id_names)
-    return linked_data

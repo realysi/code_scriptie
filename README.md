@@ -10,6 +10,18 @@ Brown rats (Rattus norvegicus) are considered pests in urban environments. They 
 
 ## Table of contents
 
+
+
+## stappenplan
+1. Krijg toegang tot data deepsqueak en agouti 
+2. Filter agouti observaties voor Rattus norvegicus
+3. kom erachter hoeveel en welke tijd de wildlifecamera's hebben gedraaid
+
+
+
+
+
+
 # agouti.py
 ## data structure
 This file processes the data received by the agouti (neural network). The agouti software scans wildlifecamera images for sightings of animals, and labels these. It returns three csv files containing usable information: observations.csv, media.csv and deployments.csv. All three data sheets contain usefull information for this program, which this program links together. Observations.csv contains the columns scientificName and timestamp. scientificName says which animal was spotted and timestamps says at what time (to the exact second). Media.csv contains the column fileName, which displays the filename of the picture from which this information was taken. In the filename, the ID of the camera is inbedded. Deployments.csv contains the columns longitude, latitude, locationName and cameraID. The locationname is for the flevopark data the same as its ID. 
