@@ -85,7 +85,7 @@ def total_runtime(pddataframe):
 def observations_per_location_no_interval(path_folder, interval_seconds):
     """
     interval is what amounts to one 1 sighting
-    Returns the amount of observations per location
+    Returns the amount of observations per location {location: [total observations, epoch observations]}
     """
     data = {}
     files = csv_filenames(path_folder)
@@ -93,13 +93,13 @@ def observations_per_location_no_interval(path_folder, interval_seconds):
         current_data = read_csv(file)
         start = timestamps_deepsqueak_to_datetime(file)
         timestamps = []
-        observations: list[float] = current_data.df['Box_1'].tolist()
+        observations: list = current_data.df['Box_1'].tolist()
         #start with first observation
-        total_observations = 0
+        total_observations_now = 0
         end_interval = 0
         for i in range(0, len(observations)):
                 if observations[i] > end_interval:
-                    total_observations += 1
+                    total_observations_now += 1
                     timestamp_observation_epoch = datetime_epoch(start) + observations[i]
                     timestamps.append(timestamp_observation_epoch)
                     end_interval = observations[i] + interval_seconds
@@ -111,13 +111,46 @@ def observations_per_location_no_interval(path_folder, interval_seconds):
             old_value = data[location][0]
             old_timestamps: list = data[location][1]
             old_timestamps.extend(timestamps)
-            data.update({location: [old_value + total_observations, old_timestamps]})
+            #files: list = data[location][2]
+            
+            #files.extend(file)
+            data.update({location: [old_value + total_observations_now, old_timestamps]})
         else:
-            data.update({location: [total_observations, timestamps]})
+            data.update({location: [total_observations_now, timestamps]})
+            pass
+    count = 0
+
+    locations: list = []
+    total_observations: list[int] = []
+    timestamps: list = []
+    tot_obs = 0
+    for i in data.keys():
+        location: str = i
+        observations_location: int = data[location][0]
+        tot_obs += observations_location
+        times: list = data[location][1]
+        
+        #print(times)
+        for j in range(len(times)):
+            locations.append(location)
+            total_observations.append(observations_location)
+        timestamps.extend(times)
 
 
-        "Write this data per location to a csv file!!!!!!!"
-    print(data)
+    path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/deepsqueak/{interval_seconds}s_{tot_obs}obs_interval_observationInfo.csv"
+
+    dictionary = {
+        'locationName': locations,
+        'total_observations': total_observations,
+        'timestamps': timestamps
+        }
+    df = pd.DataFrame(dictionary)
+    df = df.sort_values('locationName')
+    df.to_csv(path, index=False)
+    
+
+    "Write this data per location to a csv file!!!!!!!"
+    #print(data)
     return(data)
 
 

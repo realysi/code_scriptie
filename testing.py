@@ -7,7 +7,7 @@ path_deepsqueak = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deep
 #df = recordings(path_deepsqueak, 'flevopark')
 #total_runtime(df)
 
-observations_per_location_no_interval(path_deepsqueak, 1200)
+observations_per_location_no_interval(path_deepsqueak, 60)
 
 
 #24 april
