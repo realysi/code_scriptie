@@ -1,4 +1,4 @@
-from agouti.filter import data_aougti_test, data_agouti_final #at the end of project, remove data_agouti_test and rename _final to just data_agouti
+from agouti.filter import data_aougti_test #at the end of project, remove data_agouti_test and rename _final to just data_agouti
 from deepsqueak.info_data import deepsquakfiledata_to_dict
 import datetime
 
@@ -67,7 +67,7 @@ def overlap_time(dict_agouti, dict_deepsquak):
 
 
 
-def add_id_name(linked_data: Dataframe) -> Dataframe:
+def add_id_name(linked_data):
     """
     Adds ID column to data
     This functions only gets used for the Artis files, as those do not have relevant information in the locationName column

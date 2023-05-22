@@ -1,5 +1,5 @@
 import pandas as pd
-from .classes.dataframe_extension import Dataframe
+from code.classes.dataframe_extension import Dataframe
 
 """
 This file imports the data and turns it into panda dataframes, which will be stored in the class Dataframe.
