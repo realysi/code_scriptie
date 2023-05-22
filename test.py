@@ -1,5 +1,5 @@
-from code.agouti import data_aougti_test
-from code.deepsqueak_files import deepsquakfiledata_to_dict
+from agouti.filter import data_aougti_test
+from deepsqueak.info_data import deepsquakfiledata_to_dict
 from code.possible_overlaps import overlapping_id, epoch_timestamps_deepsqueak, timestamps_overlaps
 from code.overlaps import oefenshit, stap2
 

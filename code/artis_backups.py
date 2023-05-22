@@ -1,5 +1,5 @@
-from code.agouti import data_aougti_test, data_agouti_final #at the end of project, remove data_agouti_test and rename _final to just data_agouti
-from deepsqueak_files import deepsquakfiledata_to_dict
+from agouti.filter import data_aougti_test, data_agouti_final #at the end of project, remove data_agouti_test and rename _final to just data_agouti
+from deepsqueak.info_data import deepsquakfiledata_to_dict
 import datetime
 
 path = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/artis_csv'
