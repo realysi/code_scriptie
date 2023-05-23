@@ -127,7 +127,7 @@ def observations_per_location_no_interval(path_folder, interval_seconds):
     for i in data.keys():
         location: str = i
         observations_location: int = data[location][0]
-        tot_obs += observations_location
+        tot_obs += observations_location #dit zo even testen
         times: list = data[location][1]
         
         #print(times)
@@ -176,25 +176,25 @@ def info_per_location(path_folder, location_data):
     pass
 
 
-def id_names(path_folder):
+def locations(path_folder):
     filenames = csv_filenames(path_folder)
-    id_names = []
+    locations = []
     for i in filenames:
         #id_names.append(i.split('_202')[0]) ARTIS
-        id_names.append(i.split('_audio1')[0])
-    id_names = list(set(id_names))
-    return id_names #not sorted on number
+        locations.append(i.split('_audio1')[0])
+    locations = list(set(locations))
+    return locations #not sorted on number
 
 def deepsquakfiledata_to_dict(path_folder) -> dict:
-    names_id = id_names(path_folder) #['artis_26_audio1', 'artis_19_audio1', etc]
+    locations_deepsqueak = locations(path_folder) #['artis_26_audio1', 'artis_19_audio1', etc]
     files: list = csv_filenames(path_folder) #['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]
     data = {}
-    for name in names_id:
-        filenames_with_id = []
+    for location in locations_deepsqueak:
+        filenames_per_location = []
         for file in files:
-            if name in file:
-                filenames_with_id.append(file)
-        data.update({name: filenames_with_id}) #{flevopark_1: [filename, filename, filename]}            {'artis_26_audio1': ['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]}
+            if location in file:
+                filenames_per_location.append(file)
+        data.update({location: filenames_per_location}) #{flevopark_1: [filename, filename, filename]}            {'artis_26_audio1': ['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]}
     return data
     
     for h in data:

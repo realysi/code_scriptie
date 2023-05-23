@@ -2,7 +2,7 @@
 
 RUNTIME DONE, TOTAL OBSERVATIONS DONE, LOCATIONS DONE
 
-#2 find when they recorded at the same day --> find out if they ran the same hours --> save the dates, hours they recorded at the same time as you only can use these recordings
+#2 find when they recorded at the same day
 
 DOOO
 HOW:
@@ -10,14 +10,18 @@ AT THE MOMENT I ASSUME THAT THE LAST RECORDING OF DEEPSQUEAK FILE IS JUST A OBSE
 
 SO I ASSUME FOR DEEPSQUEAK THAT IF THAT DATE IS NAMED, IT RECORDED THE WHOLE DAY
 
-see which date match and untill what time.
+see which date match and (untill what time if you have the time)
+
 
 #3 find the files that contain data of those moments
 
+check
+
 #4 information about those recordings
+Find observations per locatoin
 
 #5 interval
 
 
 #22 mei, verder met match_dates() , vindt nu mathcing dates, code netjes
-
+#23 mei, files_matchingdates(), hits()

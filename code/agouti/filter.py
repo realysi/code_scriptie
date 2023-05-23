@@ -81,7 +81,7 @@ def filter_data_agouti(path_observations: str, path_media: str, path_deployments
     return add_mediadata_path
 
 
-def agoutidata_to_dict(path: str): #wordt data: Dataframe maar nu even tijd besparen
+def agoutidata_to_dict(path: str) -> dict[str, pd.DataFrame]: #wordt data: Dataframe maar nu even tijd besparen
     """
     Return dictionary that is ordened by id and dataframes {ID: pd.Dataframe}
     for artis data: ID column
