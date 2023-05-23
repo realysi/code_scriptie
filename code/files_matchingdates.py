@@ -27,7 +27,6 @@ def deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data):
                 if date in file:
                     files_with_matching_dates.append(file)
         my_dict.update({location: files_with_matching_dates})
-
     return my_dict
 
 def agouti_rows(runtime_agouti, runtime_deepsqueak, path_filtered_agouti_data):
@@ -52,5 +51,5 @@ def agouti_rows(runtime_agouti, runtime_deepsqueak, path_filtered_agouti_data):
         rows_with_matching_dates = rows_with_matching_location.loc[rows_with_matching_location['date'].isin(matching_dates_location)]
         rows_with_matching_dates = rows_with_matching_dates.drop('date', axis=1)
         my_dict.update({location: rows_with_matching_dates})
-        
+
     return my_dict

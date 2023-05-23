@@ -19,13 +19,14 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
 
     filenames, total_observations_files, locations, timestamps   = [], [], [], []
 
+    total_length_observations = 0
     for location in location_files.keys():
         files = location_files[location]
         for file in files:
             current_data = read_csv(file)
             start = timestamps_deepsqueak_to_datetime(file)
             observations: list = current_data.df['Box_1'].tolist()
-
+            total_length_observations += len(observations)
             #start with first observation
             current_timestamps = []
             total_observations_now = 0
@@ -38,12 +39,12 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
                         end_interval = observations[i] + interval_seconds
                     else:
                         continue
-
-            for j in range(0, len(current_timestamps)):
+            
+            timestamps.extend(current_timestamps)
+            for j in range(len(current_timestamps)):
                 filenames.append(file)
                 locations.append(location)
                 total_observations_files.append(total_observations_now)
-            timestamps.extend(current_timestamps)
 
     path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/data/DS_{interval_seconds}s_{len(timestamps)}obs.csv"
 

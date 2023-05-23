@@ -109,16 +109,16 @@ def observations_per_location_no_interval(path_folder, interval_seconds):
         location = location_deepsqueak_file(file)
         if location in data.keys():
             old_value = data[location][0]
+            new_value = old_value + total_observations_now
             old_timestamps: list = data[location][1]
             old_timestamps.extend(timestamps)
             #files: list = data[location][2]
             
             #files.extend(file)
-            data.update({location: [old_value + total_observations_now, old_timestamps]})
+            data.update({location: [new_value, old_timestamps]})
         else:
             data.update({location: [total_observations_now, timestamps]})
             pass
-    count = 0
 
     locations: list = []
     total_observations: list[int] = []
@@ -142,6 +142,59 @@ def observations_per_location_no_interval(path_folder, interval_seconds):
     dictionary = {
         'locationName': locations,
         'total_observations': total_observations,
+        'timestamps': timestamps
+        }
+    df = pd.DataFrame(dictionary)
+    df = df.sort_values('locationName')
+    df.to_csv(path, index=False)
+    
+
+    "Write this data per location to a csv file!!!!!!!"
+    #print(data)
+    return(data)
+
+def observations_per_location_no_interval2(path_folder, interval_seconds):
+    """
+    interval is what amounts to one 1 sighting
+    Returns the amount of observations per location {location: [total observations, epoch observations]}
+    """
+    data = {}
+    files = csv_filenames(path_folder)
+
+    timestamps = []
+    locations = []
+    observations_count = []
+
+    total_length_observations = 0
+    for file in files:
+        current_data = read_csv(file)
+        start = timestamps_deepsqueak_to_datetime(file)
+
+        observations: list = current_data.df['Box_1'].tolist()
+        total_length_observations += len(observations)
+        #start with first observation 
+        location = location_deepsqueak_file(file)
+        timestamp = []
+        total_observations_now = 0
+        end_interval = 0
+        for i in range(0, len(observations)):
+                if observations[i] > end_interval:
+                    total_observations_now += 1
+                    timestamp_observation_epoch = datetime_epoch(start) + observations[i]
+                    timestamp.append(timestamp_observation_epoch)
+                    end_interval = observations[i] + interval_seconds
+                else:
+                    continue
+
+        timestamps.extend(timestamp)
+        for j in range(len(timestamp)):
+            observations_count.append(total_observations_now)
+            locations.append(location)
+    path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/deepsqueak/{interval_seconds}s_{len(timestamps)}obs_interval_observationInfo.csv"
+
+    dictionary = {
+        'locationName': locations,
+        'total_observations': observations_count,
         'timestamps': timestamps
         }
     df = pd.DataFrame(dictionary)
@@ -192,13 +245,12 @@ def deepsquakfiledata_to_dict(path_folder) -> dict:
     for location in locations_deepsqueak:
         filenames_per_location = []
         for file in files:
-            if location in file:
+            file_location = file.split("_audio1")[0]
+            if location == file_location:
                 filenames_per_location.append(file)
         data.update({location: filenames_per_location}) #{flevopark_1: [filename, filename, filename]}            {'artis_26_audio1': ['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]}
     return data
     
-    for h in data:
-       print(f"key: {h}, values: {data[h]} \n\n")
 
 
 "4 mei: vandaag: - code opgeschoond, agouti data nu in dictionary, deepsquak files begin daaraan (files kunnen worden ingelezen)"
