@@ -89,8 +89,8 @@ def agoutidata_to_dict(path: str) -> dict[str, pd.DataFrame]: #wordt data: Dataf
     """
     dict_data = {}
     data = read_csv(path)
-    all_id_names = list(set(data.df['locationName'].tolist())) #all unique locationnames (flevopark_1, flevopark_2 etc)
-    for j in all_id_names:
+    all_locations = list(set(data.df['locationName'].tolist())) #all unique locationnames (flevopark_1, flevopark_2 etc)
+    for j in all_locations:
         rows: pd.DataFrame = data.df.loc[data.df['locationName'] == j]
         if rows['locationName'].str.contains('flevopark').any():
             dict_data.update({j: rows})
