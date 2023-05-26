@@ -2,7 +2,7 @@ from code.matchingdates import matching_dates
 from code.files_matchingdates import deepsqueak_files, agouti_rows
 from code.agouti.filter import agoutidata_to_dict
 from code.read_data import read_csv
-from code.deepsqueak.info_data import csv_filenames, timestamps_deepsqueak_to_datetime, datetime_epoch, location_deepsqueak_file
+from code.deepsqueak.info_data import csv_filenames, timestamps_deepsqueak_to_datetime, datetime_to_epoch, location_deepsqueak_file
 import pandas as pd
 import numpy
 
@@ -14,7 +14,8 @@ what do we have:
 def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds):
     """
     interval is what amounts to one 1 sighting
-    Returns the amount of observations per location {location: [total observations, epoch observations]}
+    Returns dataframe with locationName, filename, total observations per file and timestamps
+    Also writes it to a csv file.
     """
     location_files = deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data)
 
@@ -35,7 +36,7 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
             for i in range(0, len(observations)):
                     if observations[i] > end_interval:
                         total_observations_now += 1
-                        timestamp_observation_epoch = datetime_epoch(start) + observations[i]
+                        timestamp_observation_epoch = datetime_to_epoch(start) + observations[i]
                         current_timestamps.append(timestamp_observation_epoch)
                         end_interval = observations[i] + interval_seconds
                     else:
@@ -48,13 +49,7 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
                 total_observations_files.append(total_observations_now)
 
     path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/data/DS_{interval_seconds}s_{len(timestamps)}obs.csv"
-
-    dictionary = {
-        'locationName': locations,
-        'filename': filenames,
-        'total_observations_file': total_observations_files,
-        'timestamps': timestamps
-        }
+    dictionary = {'locationName': locations, 'filename': filenames, 'total_observations_file': total_observations_files, 'timestamps': timestamps}
     df = pd.DataFrame(dictionary)
     df = df.sort_values('locationName')
     df.to_csv(path, index=False)
@@ -62,6 +57,11 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
     return df
 
 def agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds):
+    """
+    interval is what amounts to one 1 sighting
+    Returns dataframe with locationName, filename and timestamps
+    Also writes it to a csv file.
+    """
     locations_rows = agouti_rows(runtime_agouti, runtime_deepsqueak, path_agouti_data)
     locations, filenames, timestamps   = [], [], []
 
@@ -90,43 +90,14 @@ def agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, in
             continue
 
     path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/data/AG_{interval_seconds}s_{len(timestamps)}obs.csv"
-
-    dictionary = {
-        'locationName': locations,
-        'filename': filenames,
-        'timestamps': timestamps
-        }
+    dictionary = {'locationName': locations,'filename': filenames,'timestamps': timestamps}
     df = pd.DataFrame(dictionary)
     df = df.sort_values('locationName')
     df.to_csv(path, index=False)
     
     return df
 
-
-    """print(type(cell_value_firstrow))
-            print(f"location: {location}, rows: {len(rows)}")
-            print(observations)"""
-        
-    """for i in range(0, len(rows)):
-            if floatrows.loc[i, 'epoch'] > end_interval:
-                timestamps_location.append(rows.loc[i, 'epoch'])"""
-        #rows.to_csv(f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/filtered/test_{location}.csv", index=False)
-        #first_observation = min(observations)
-        #print(f'first observatoin {first_observation}')
-
-    """current_data = read_csv(file)
-    start = timestamps_deepsqueak_to_datetime(file)
-    observations: list = current_data.df['Box_1'].tolist()
-    total_length_observations += len(observations)
-    #start with first observation
-    current_timestamps = []
-    total_observations_now = 0
-    end_interval = 0
-    for i in range(0, len(observations)):
-            if observations[i] > end_interval:
-                total_observations_now += 1
-                timestamp_observation_epoch = datetime_epoch(start) + observations[i]
-                current_timestamps.append(timestamp_observation_epoch)
-                end_interval = observations[i] + interval_seconds
-            else:
-                continue"""
+def hits(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, path_agouti_data, interval_seconds):
+    deepsqueak_df = deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds)
+    agouti_df = agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds)
+    return [agouti_df, deepsqueak_df]

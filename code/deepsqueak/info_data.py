@@ -33,7 +33,7 @@ def timestamps_deepsqueak_to_datetime(filename_deepsqueak):
     datetime_object: datetime.datetime = datetime.datetime(year=int(year), month=int(month), day=int(day), hour=int(hours), minute=int(minutes), second=int(seconds))
     return datetime_object
 
-def datetime_epoch(datetime_object: datetime.datetime):
+def datetime_to_epoch(datetime_object: datetime.datetime):
     """
     Turns datetime object into epoch. 2021-09-28 16:00:00 --> 13480123 etc.
     """
@@ -52,9 +52,8 @@ def recordings(path_folder, location_data):
         last_observation = round(max(observations))
         current_location = location_deepsqueak_file(file)
         start = timestamps_deepsqueak_to_datetime(file)
-        #end = start + last_observation
         end = start + datetime.timedelta(seconds=last_observation)
-        run_time = abs(datetime_epoch(start) - datetime_epoch(end))
+        run_time = abs(datetime_to_epoch(start) - datetime_to_epoch(end))
         starttimes.append(start)
         endtimes.append(end)
         runtime.append(run_time)
@@ -81,79 +80,7 @@ def total_runtime(pddataframe):
     print(data)
     return data
 
-
 def observations_per_location_no_interval(path_folder, interval_seconds):
-    """
-    interval is what amounts to one 1 sighting
-    Returns the amount of observations per location {location: [total observations, epoch observations]}
-    """
-    data = {}
-    files = csv_filenames(path_folder)
-    for file in files:
-        current_data = read_csv(file)
-        start = timestamps_deepsqueak_to_datetime(file)
-        timestamps = []
-        observations: list = current_data.df['Box_1'].tolist()
-        #start with first observation
-        total_observations_now = 0
-        end_interval = 0
-        for i in range(0, len(observations)):
-                if observations[i] > end_interval:
-                    total_observations_now += 1
-                    timestamp_observation_epoch = datetime_epoch(start) + observations[i]
-                    timestamps.append(timestamp_observation_epoch)
-                    end_interval = observations[i] + interval_seconds
-                else:
-                    continue
-
-        location = location_deepsqueak_file(file)
-        if location in data.keys():
-            old_value = data[location][0]
-            new_value = old_value + total_observations_now
-            old_timestamps: list = data[location][1]
-            old_timestamps.extend(timestamps)
-            #files: list = data[location][2]
-            
-            #files.extend(file)
-            data.update({location: [new_value, old_timestamps]})
-        else:
-            data.update({location: [total_observations_now, timestamps]})
-            pass
-
-    locations: list = []
-    total_observations: list[int] = []
-    timestamps: list = []
-    tot_obs = 0
-    for i in data.keys():
-        location: str = i
-        observations_location: int = data[location][0]
-        tot_obs += observations_location #dit zo even testen
-        times: list = data[location][1]
-        
-        #print(times)
-        for j in range(len(times)):
-            locations.append(location)
-            total_observations.append(observations_location)
-        timestamps.extend(times)
-
-
-    path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/deepsqueak/{interval_seconds}s_{tot_obs}obs_interval_observationInfo.csv"
-
-    dictionary = {
-        'locationName': locations,
-        'total_observations': total_observations,
-        'timestamps': timestamps
-        }
-    df = pd.DataFrame(dictionary)
-    df = df.sort_values('locationName')
-    df.to_csv(path, index=False)
-    
-
-    "Write this data per location to a csv file!!!!!!!"
-    #print(data)
-    return(data)
-
-def observations_per_location_no_interval2(path_folder, interval_seconds):
     """
     interval is what amounts to one 1 sighting
     Returns the amount of observations per location {location: [total observations, epoch observations]}
@@ -180,7 +107,7 @@ def observations_per_location_no_interval2(path_folder, interval_seconds):
         for i in range(0, len(observations)):
                 if observations[i] > end_interval:
                     total_observations_now += 1
-                    timestamp_observation_epoch = datetime_epoch(start) + observations[i]
+                    timestamp_observation_epoch = datetime_to_epoch(start) + observations[i]
                     timestamp.append(timestamp_observation_epoch)
                     end_interval = observations[i] + interval_seconds
                 else:
@@ -210,20 +137,6 @@ def observations_per_location_no_interval2(path_folder, interval_seconds):
 def info(path_folder, location_data):
     df = recordings(path_folder, location_data)
     runtimes = total_runtime(df)
-
-
-"""def runtime_location(path_folder, location_data):
-    data = {}
-    df = recordings(path_folder, location_data)
-    locations = list(set(df['locationName'].tolist()))
-    for location in locations:
-        total_runtime = 0
-        rows = df.loc[df['locationName'] == location]
-        for i in rows.index:
-            runtime = rows.loc[i, 'runtime']
-            total_runtime += runtime
-        data.update({location: total_runtime})
-    return data"""
 
 def info_per_location(path_folder, location_data):
     pass

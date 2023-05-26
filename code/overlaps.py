@@ -1,8 +1,30 @@
 from code.read_data import read_csv
+from code.hits import deepsqueak_observations, agouti_observations
+from code.classes.dataframe_extension import Dataframe
 import datetime
 import os
 import copy
 import pandas as pd
+
+
+
+def chance_audio_cameraruntime_agouti(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, path_agouti_data, interval_seconds, interval):
+    ds_observations = deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds)
+    ag_observations = agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds)
+
+    locations = list(set(ag_observations['locationName'].tolist()))
+    for location in locations:
+        ag_data = Dataframe(copy.deepcopy(ag_observations))
+        ds_data = Dataframe(copy.deepcopy(ds_observations))
+        ag_data.select_rows_by_columnvalue('locationName', location)
+        ag_observations = ag_data.df['timestamps'].tolist()
+        for ag_observation in ag_observations:
+            ag_timestamp = ag_observation
+            for ds_observation in ds_observations:
+                if ds_observation == ag_timestamp + interval or ag_timestamp - interval 
+
+
+    pass
 
 """
 def test(dict_agouti, dict_deepsqueak_files) -> dict:
