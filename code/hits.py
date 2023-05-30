@@ -17,7 +17,7 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
     Returns dataframe with locationName, filename, total observations per file and timestamps
     Also writes it to a csv file.
     """
-    location_files = deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data)
+    location_files: dict[str, list[str]] = deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data)
 
     filenames, total_observations_files, locations, timestamps   = [], [], [], []
 

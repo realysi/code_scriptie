@@ -8,48 +8,61 @@ import pandas as pd
 
 
 
-def chance_audio_cameraruntime_agouti(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, path_agouti_data, interval_seconds, interval):
+def chances(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, path_agouti_data, interval_seconds, interval):
     ds_observations = deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds)
     ag_observations = agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds)
 
-    locations = list(set(ag_observations['locationName'].tolist()))
+    total_deepsqueak_observations = len(ds_observations)
+    total_agouti_observations = len(ag_observations)
+
+    audio_at_camera = 0
+    camera_at_audio = 0
+
+    locations = list(set(ag_observations['locationName'].tolist())) #locations in agouti
     for location in locations:
+        intervals_audio_at_camera = []
+        intervals_camera_at_audio = []
+
         ag_data = Dataframe(copy.deepcopy(ag_observations))
         ds_data = Dataframe(copy.deepcopy(ds_observations))
+
         ag_data.select_rows_by_columnvalue('locationName', location)
-        ag_observations = ag_data.df['timestamps'].tolist()
-        for ag_observation in ag_observations:
+        ds_data.select_rows_by_columnvalue('locationName', location)
+
+        agou_observations = ag_data.df['timestamps'].tolist() #all timestamps in a list.
+        deeps_observations = ds_data.df['timestamps'].tolist()
+        #audio observation at camera observation
+        for ag_observation in agou_observations: #skips through timestamps
             ag_timestamp = ag_observation
-            for ds_observation in ds_observations:
-                if ds_observation == ag_timestamp + interval or ag_timestamp - interval 
+            for ds_observation in deeps_observations:
+                ds_timestamp = ds_observation
+                if ag_timestamp - interval <= ds_timestamp <= ag_timestamp + interval or ds_timestamp == ag_timestamp:
+                    intervals_audio_at_camera.append(ds_timestamp)
+                    audio_at_camera += 1
+                    break
+        #camera observation at audio observation
+        for ds_observation in deeps_observations: #skips through timestamps
+            ds_timestamp = ds_observation
+            for ag_observation in agou_observations:
+                ag_timestamp = ag_observation
+                if ds_timestamp - interval <= ag_timestamp <= ds_timestamp + interval or ag_timestamp == ds_timestamp:
+                    intervals_camera_at_audio.append(ag_timestamp)
+                    camera_at_audio += 1
+                    break
 
 
-    pass
 
-"""
-def test(dict_agouti, dict_deepsqueak_files) -> dict:
 
-    returns dictionary with {agouti_timestamp_possible overlap: deepsqueak_filename}
 
-    data = timestamps_overlaps(dict_agouti, dict_deepsqueak_files)  #--> dict of possible_overlaps {ID: [[timestamps_agouti_observering], [starttime_deepsqueak_observering]]}
-    new_data = {}
-    deepsqueak_filenames_overlaps = []
-    for current_id in data.keys(): 
-        files_deepsqueak_current_id = dict_deepsqueak_files[current_id]
-        epoch_agoutidata:list = data[current_id][0] #both lists are the same length if everything is correct
-        epoch_starttimes_deepsqueak: list = data[current_id][1]
-        for j in range(0, len(epoch_agoutidata)):
-            starttime_epoch = epoch_starttimes_deepsqueak[j]
-            starttime_utc = str(datetime.datetime.fromtimestamp(starttime_epoch))
-            date, time = starttime_utc.split(" ")
-            time = time.replace(":", "-")
-            filename = f"{current_id}_audio1_{date}_{time}"
-            for file in files_deepsqueak_current_id:
-                if filename in file:
-                    deepsqueak_filenames_overlaps.append(file)
-                    new_data.update({epoch_agoutidata[j]: file})
-    print(new_data)
-    return new_data"""
+        #my_data.update({location: intervals})
+    chance_audio_atcamera = audio_at_camera / total_agouti_observations #in percentages
+    chance_camera_ataudio = camera_at_audio / total_deepsqueak_observations #in percentages
+    print(f'chance_audio_atcamera: {chance_audio_atcamera}')
+    print(audio_at_camera, total_agouti_observations)
+    print(f"chance camera at audio: {chance_camera_ataudio}")
+    print(camera_at_audio, total_deepsqueak_observations)
+
+
 
 def timestamps_deepsqueak_to_epoch(filename_deepsqueak):
     timestamp = filename_deepsqueak.split('audio1_')[1]
@@ -61,32 +74,4 @@ def timestamps_deepsqueak_to_epoch(filename_deepsqueak):
     epoch = datetime_object.timestamp()
     return epoch
 
-
-
-"""
-def stap2(dict_agouti, dict_deepsqueak_files): #in the future folder_path as argument
-    #interval hier checken
-    data = oefenshit(dict_agouti, dict_deepsqueak_files) #{1637855589.0: 'flevopark_11_audio1_2021-11-25_16-00-00_(6) 2022-12-14  7_35 PM.csv', 1637856387.0: 'flevopark_11_audio1_2021-11-25_16-00-00_(6) 2022-12-14  7_35 PM.csv',}
-    folder_path = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/flevopark_csv'
-
-    #1. read in csv file of deepsqueak corresponding to possible overlap agouti timestamp
-    for agouti_timestamp in data.keys():
-        deepsqueak_filename = os.path.join(folder_path, data[agouti_timestamp])
-        deepsqueak_starttime_epoch = timestamps_deepsqueak_to_epoch(deepsqueak_filename)
-        deepsqueak_data = read_csv(deepsqueak_filename)
-        #box1 = seconds since start recording | box2 = lowest frequency | box3 = duration | box4 = delta frequency
-
-
-        #2. check if difference bigger than last sighting (last row box1) of deepsqueak
-        difference = agouti_timestamp - deepsqueak_starttime_epoch
-        seconds_since_starttime:list = deepsqueak_data.df['Box_1'].tolist()
-        highest_value = max(seconds_since_starttime)
-        if difference > highest_value:
-            print("no overlap possible without bigger interval")
-
-
-        print(f"Starttime deepsqueak: {deepsqueak_starttime_epoch} | agouti timestamp: {agouti_timestamp}")
-        print(f"Difference: {difference}")
-        print(f"max: {highest_value}")
-        print(deepsqueak_data.df)"""
 

@@ -26,6 +26,7 @@ def matching_dates(runtime_agouti, runtime_deespqueak) -> dict[str, list[str]]: 
     matching_dates_csv(matching_dates)
     return matching_dates
 
+
 def find_dates(dict_agouti_dates, dict_deepsqueak_dates) -> dict[str, list[str]]: #agouti: {flevopark_7 : ['2021-09-17', etc]} deepsqueak = hetzelfde
     """
     Finds the dates that match per location from the agouti and deepsqueak data set

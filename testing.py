@@ -1,7 +1,8 @@
-from code.deepsqueak.info_data import recordings, info_per_location, total_runtime, observations_per_location_no_interval, observations_per_location_no_interval2
+from code.deepsqueak.info_data import recordings, info_per_location, total_runtime, observations_per_location_no_interval
 from code.matchingdates import matching_dates
 from code.files_matchingdates import deepsqueak_files, agouti_rows
 from code.hits import deepsqueak_observations, agouti_observations
+from code.overlaps import chances
 
 path_deepsqueak = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/flevopark_csv'
 
@@ -15,8 +16,8 @@ runtime_deepsqueak = '/Users/yanickidsinga/Documents/GitHub/code_scriptie/result
 observations_per_location_no_interval2(path_deepsqueak, 600)
 deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak, 600)"""
 
-agouti_observations(runtime_agouti, runtime_deepsqueak, '/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/final/data_flevopark.csv', 10)
-
+#agouti_observations(runtime_agouti, runtime_deepsqueak, '/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/final/data_flevopark.csv', 10)
+chances(runtime_agouti, runtime_deepsqueak, path_deepsqueak, '/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/final/data_flevopark.csv', 30, 600)
 #24 april
 """eindelijk gelukt om de naam van de datafiles van de images te koppelen"""
 
