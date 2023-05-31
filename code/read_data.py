@@ -4,6 +4,10 @@ from code.classes.dataframe_extension import Dataframe
 """
 This file imports the data and turns it into panda dataframes, which will be stored in the class Dataframe.
 """
+def read_csv(relative_path: str):
+    csv = pd.read_csv(relative_path, delimiter=",", index_col=False, low_memory=False)
+    data = Dataframe(csv)
+    return data
 
 def read_sheets_xlsx(path: str, sheet_names: list) -> list[Dataframe]:
     """
@@ -23,10 +27,3 @@ def read_xlsx(path: str, name: str) -> Dataframe:
     return data
 
 
-def read_csv(relative_path: str, ):
-    csv = pd.read_csv(relative_path, delimiter=",", index_col=False, low_memory=False)
-    data = Dataframe(csv)
-    return data
-
-
-dtype={"user_id": int, "username": "string"}

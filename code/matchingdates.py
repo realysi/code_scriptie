@@ -1,5 +1,7 @@
 from code.read_data import read_csv
+from code.agouti.agouti import total_runningtime
 from code.classes.dataframe_extension import Dataframe
+from code.deepsqueak.info_data import runtime
 import datetime
 import copy
 import pandas as pd
@@ -15,13 +17,13 @@ the day before to 5:00 is a possible recording.
 """
 
 #AT THE MOMENT NOT TAKING START AND END DATES WITH AS DAYS OF RECORDING AGOUTI (WHICH IT PROBABLY IS) In DATES_BETWEEN()
-def matching_dates(runtime_agouti, runtime_deespqueak) -> dict[str, list[str]]: #bvb {flevopark_7 : ['2021-09-17', etc}
+def matching_dates(path_deployments, location_dataset, folder_deepsqueak) -> dict[str, list[str]]: #bvb {flevopark_7 : ['2021-09-17', etc}
     """
     Returns dictionary with location as key and the matching dates for that location as values
     {location: [date, date]}. Also writes it to a csv file: matchingDates
     """
-    agouti_data = agouti_recording_dates(runtime_agouti)
-    deepsqueak_data = deepsqueak_recording_dates(runtime_deespqueak)
+    agouti_data = agouti_recording_dates(path_deployments, location_dataset)
+    deepsqueak_data = deepsqueak_recording_dates(folder_deepsqueak, location_dataset)
     matching_dates: dict[str, list[str]]  = find_dates(agouti_data, deepsqueak_data)
     matching_dates_csv(matching_dates)
     return matching_dates
@@ -71,11 +73,11 @@ def matching_locations(dict_agouti: dict, dict_deepsquak: dict):
             overlapping_locations.append(i)
     return overlapping_locations
 
-def agouti_recording_dates(runtime_agouti) -> dict[str, list[str]]: #{location: [2021-11-24, etc]}
+def agouti_recording_dates(path_deployments, location_dataset ) -> dict[str, list[str]]: #{location: [2021-11-24, etc]}
     """
     Returns a dictionary {location: [date, date]} with the dates that the camera recorded for 24 hours (see notes above)
     """
-    info_recordings: Dataframe = read_csv(runtime_agouti)
+    info_recordings: Dataframe = total_runningtime(path_deployments, location_dataset)
     locations = list(set(info_recordings.df['locationName'].tolist()))
     my_dict = {}
     for location in locations:
@@ -90,11 +92,11 @@ def agouti_recording_dates(runtime_agouti) -> dict[str, list[str]]: #{location: 
         my_dict.update({location: dates})
     return my_dict
 
-def deepsqueak_recording_dates(runtime_deepsqueak) -> dict[str, list[str]]:
+def deepsqueak_recording_dates(path_folder, location_dataset) -> dict[str, list[str]]:
     """
     Returns a dictionary {location: [date, date]} with the dates that the audio recorded. For specifications, see the notes above.
     """
-    info_recordings = read_csv(runtime_deepsqueak)
+    info_recordings = Dataframe(runtime(path_folder, location_dataset))
     locations = list(set(info_recordings.df['locationName'].tolist()))
     my_dict = {}
     for location in locations:

@@ -8,9 +8,9 @@ import pandas as pd
 
 
 
-def chances(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, path_agouti_data, interval_seconds, interval):
-    ds_observations = deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds)
-    ag_observations = agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds)
+def chances(path_media, path_observations, path_deployments, path_deepsqueak_data, interval_seconds, interval, location_dataset):
+    ds_observations = deepsqueak_observations(path_deployments, path_deepsqueak_data, interval_seconds, location_dataset)
+    ag_observations = agouti_observations(path_deployments, path_observations, location_dataset, path_media, path_deepsqueak_data, interval_seconds)
 
     total_deepsqueak_observations = len(ds_observations)
     total_agouti_observations = len(ag_observations)

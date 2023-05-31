@@ -1,5 +1,0 @@
-deploymentID,sequenceID,timestamp,scientificName,UTC timestamp,epoch,longitude,latitude,locationName,cameraID,fileName
-bbaf00c8-5007-4af0-ac9c-4ae2b8c13056,fdfb5912-e78a-438e-a67d-8ca9162197e4,2021-09-29T02:42:14+01:00,Rattus norvegicus,2021-09-29 01:42:14,1632879734.0,4.94838,52.36188,flevopark_4,,20220407112713-flevopark_4_wildlife camera1_2021-09-29_02-42-14_(121).JPG
-bbaf00c8-5007-4af0-ac9c-4ae2b8c13056,6e374ead-a306-44cf-b2b4-513189e8572e,2021-09-29T06:46:22+01:00,Rattus norvegicus,2021-09-29 05:46:22,1632894382.0,4.94838,52.36188,flevopark_4,,20220407113103-flevopark_4_wildlife camera1_2021-09-29_06-46-22_(201).JPG
-bbaf00c8-5007-4af0-ac9c-4ae2b8c13056,8fde801e-3e5e-4220-ad28-f342a0ba69d1,2021-09-30T22:04:11+01:00,Rattus norvegicus,2021-09-30 21:04:11,1633035851.0,4.94838,52.36188,flevopark_4,,20220407113218-flevopark_4_wildlife camera1_2021-09-30_22-04-11_(226).JPG
-4b2922c8-5290-431c-b9c9-b97c0fca9292,d5ddfeb3-59b2-4680-8c20-0a0fe136b594,2021-11-28T19:00:16+01:00,Rattus norvegicus,2021-11-28 18:00:16,1638122416.0,4.94838,52.36188,flevopark_4,,20220410092546-flevopark_4_wildlife camera1_2021-11-28_19-00-16_(367).JPG

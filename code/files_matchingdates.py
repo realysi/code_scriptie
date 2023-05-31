@@ -1,20 +1,21 @@
 from code.read_data import read_csv
 from code.classes.dataframe_extension import Dataframe
 from code.deepsqueak.info_data import deepsquakfiledata_to_dict
-from code.agouti.filter import agoutidata_to_dict
+from code.agouti.agouti import agoutidata_to_dict
+from code.agouti.agouti import filter_data_agouti
 import datetime
 import copy
 import pandas as pd
 
 from code.matchingdates import matching_dates
 
-def deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data):
+def deepsqueak_files(path_deployments, location_dataset, folder_deepsqueak):
     """
     Returns filenames of deepsqueak file that have a matching date in their name
     {location: [file, file, file]}
     """
-    dates = matching_dates(runtime_agouti, runtime_deepsqueak)
-    files_per_location: dict[str, list[str]] = deepsquakfiledata_to_dict(path_deepsqueak_data)
+    dates = matching_dates(path_deployments, location_dataset, folder_deepsqueak)
+    files_per_location: dict[str, list[str]] = deepsquakfiledata_to_dict(folder_deepsqueak)
 
     my_dict = {}
     for location in dates.keys():
@@ -29,13 +30,14 @@ def deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data):
         my_dict.update({location: files_with_matching_dates})
     return my_dict
 
-def agouti_rows(runtime_agouti, runtime_deepsqueak, path_filtered_agouti_data):
+def agouti_rows(path_deployments, path_observations, path_media, location_dataset, folder_deepsqueak):
     """
     Returns pd.Dataframe rows that contain matching_dates. It does so in a dictionary
     {location: pd.Dataframe rows}
     """
-    dates = matching_dates(runtime_agouti, runtime_deepsqueak)
-    rows_per_location = agoutidata_to_dict(path_filtered_agouti_data)
+    dates = matching_dates(path_deployments, location_dataset, folder_deepsqueak)
+    filtered_agouti_data = filter_data_agouti(path_observations, path_media, path_deployments, location_dataset)
+    rows_per_location = agoutidata_to_dict(filtered_agouti_data)
 
     my_dict = {}
     for location in dates.keys():

@@ -11,13 +11,13 @@ what do we have:
 - matching dates, - files from deepsqueak per location that contain those mathcing dates, -agouti rows that contain that date
 """
 
-def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds):
+def deepsqueak_observations(path_deployments, path_deepsqueak_data, interval_seconds, location_dataset):
     """
     interval is what amounts to one 1 sighting
     Returns dataframe with locationName, filename, total observations per file and timestamps
     Also writes it to a csv file.
     """
-    location_files: dict[str, list[str]] = deepsqueak_files(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data)
+    location_files: dict[str, list[str]] = deepsqueak_files(path_deployments, location_dataset, path_deepsqueak_data)
 
     filenames, total_observations_files, locations, timestamps   = [], [], [], []
 
@@ -56,13 +56,13 @@ def deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_
     
     return df
 
-def agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds):
+def agouti_observations(path_deployments, path_observations, location_dataset, path_media, folder_deepsqueak, interval_seconds):
     """
     interval is what amounts to one 1 sighting
     Returns dataframe with locationName, filename and timestamps
     Also writes it to a csv file.
     """
-    locations_rows = agouti_rows(runtime_agouti, runtime_deepsqueak, path_agouti_data)
+    locations_rows = agouti_rows(path_deployments, path_observations, path_media, location_dataset, folder_deepsqueak)
     locations, filenames, timestamps   = [], [], []
 
     for location in locations_rows.keys():
@@ -97,7 +97,7 @@ def agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, in
     
     return df
 
-def hits(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, path_agouti_data, interval_seconds):
-    deepsqueak_df = deepsqueak_observations(runtime_agouti, runtime_deepsqueak, path_deepsqueak_data, interval_seconds)
-    agouti_df = agouti_observations(runtime_agouti, runtime_deepsqueak, path_agouti_data, interval_seconds)
+def hits(path_deployments, path_observations, location_dataset, path_media, folder_deepsqueak, interval_seconds):
+    deepsqueak_df = deepsqueak_observations(path_deployments, folder_deepsqueak, interval_seconds, location_dataset)
+    agouti_df = agouti_observations(path_deployments, path_observations, location_dataset, path_media, folder_deepsqueak, interval_seconds)
     return [agouti_df, deepsqueak_df]
