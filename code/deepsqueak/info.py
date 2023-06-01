@@ -40,40 +40,6 @@ def datetime_to_epoch(datetime_object: datetime.datetime):
     epoch = datetime_object.timestamp()
     return epoch
 
-def runtime(path_folder, location_data):
-    """
-    Creates a csv(runtime_flevopark) with information of each recording. LocationName | start_recording | end_recording | runtime (seconds)
-    """
-    starttimes, endtimes, runtime, location = [], [], [], []
-    files = csv_filenames(path_folder)
-    for file in files:
-        current_data = read_csv(file)
-        observations: list = current_data.df['Box_1'].tolist()
-        last_observation = round(max(observations))
-        current_location = location_deepsqueak_file(file)
-        start = timestamps_deepsqueak_to_datetime(file)
-        end = start + datetime.timedelta(seconds=last_observation)
-        run_time = abs(datetime_to_epoch(start) - datetime_to_epoch(end))
-        starttimes.append(start)
-        endtimes.append(end)
-        runtime.append(run_time)
-        location.append(current_location)
-
-    data = {'locationName': location, 'start': starttimes, 'end': endtimes, 'runtime (sec)': runtime} 
-    df = pd.DataFrame(data)
-    df = df.sort_values('locationName')
-    path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/deepsqueak/runtime_{location_data}.csv"
-    df.to_csv(path, index=False)
-    return df
-
-def total_runtime(pddataframe):
-    """
-    returns dictionary with total runtime per location and total recordings. {flevopark_1: [3 days 1:36:56, 52}.
-    """
-    data = Dataframe(pddataframe)
-    data = data.total_runtime_per_location()
-    print(data)
-    return data
 
 def observations_interval(path_folder, interval_seconds):
     """
@@ -112,26 +78,8 @@ def observations_interval(path_folder, interval_seconds):
     df.to_csv(path, index=False)
     return df
 
-
-def info(path_folder, location_data):
-    df = runtime(path_folder, location_data)
-    runtimes = total_runtime(df)
-
-def info_per_location(path_folder, location_data):
-    pass
-
-
-def locations(path_folder):
-    filenames = csv_filenames(path_folder)
-    locations = []
-    for i in filenames:
-        #id_names.append(i.split('_202')[0]) ARTIS
-        locations.append(i.split('_audio1')[0])
-    locations = list(set(locations))
-    return locations #not sorted on number
-
 def deepsquakfiledata_to_dict(path_folder) -> dict:
-    locations_deepsqueak = locations(path_folder) #['artis_26_audio1', 'artis_19_audio1', etc]
+    locations_deepsqueak = deepsqueak_locations(path_folder) #['artis_26_audio1', 'artis_19_audio1', etc]
     files: list = csv_filenames(path_folder) #['artis_26_audio1_2021-10-09_16-00-00_(19) 2022-12-14  5_39 PM.csv', etc]
     data = {}
     for location in locations_deepsqueak:

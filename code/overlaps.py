@@ -8,23 +8,23 @@ import pandas as pd
 
 
 
-def chances(path_media, path_observations, path_deployments, path_deepsqueak_data, interval_seconds, interval, location_dataset):
-    ds_observations = deepsqueak_observations(path_deployments, path_deepsqueak_data, interval_seconds, location_dataset)
-    ag_observations = agouti_observations(path_deployments, path_observations, location_dataset, path_media, path_deepsqueak_data, interval_seconds)
+def chances(deepsqueak_observations: Dataframe, agouti_observations: Dataframe, interval):
+    ds_observations = deepsqueak_observations
+    ag_observations = agouti_observations
 
-    total_deepsqueak_observations = len(ds_observations)
-    total_agouti_observations = len(ag_observations)
+    total_deepsqueak_observations = len(ds_observations.df)
+    total_agouti_observations = len(ag_observations.df)
 
     audio_at_camera = 0
     camera_at_audio = 0
 
-    locations = list(set(ag_observations['locationName'].tolist())) #locations in agouti
+    locations = list(set(ag_observations.df['locationName'].tolist())) #locations in agouti
     for location in locations:
         intervals_audio_at_camera = []
         intervals_camera_at_audio = []
 
-        ag_data = Dataframe(copy.deepcopy(ag_observations))
-        ds_data = Dataframe(copy.deepcopy(ds_observations))
+        ag_data = copy.deepcopy(ag_observations)
+        ds_data = copy.deepcopy(ds_observations)
 
         ag_data.select_rows_by_columnvalue('locationName', location)
         ds_data.select_rows_by_columnvalue('locationName', location)

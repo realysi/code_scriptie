@@ -1,24 +1,21 @@
 from code.matchingdates import matching_dates
 from code.files_matchingdates import deepsqueak_files, agouti_rows
-from code.agouti.filter import agoutidata_to_dict
 from code.read_data import read_csv
-from code.deepsqueak.info_data import csv_filenames, timestamps_deepsqueak_to_datetime, datetime_to_epoch, location_deepsqueak_file
 import pandas as pd
 import numpy
-
+from code.deepsqueak.functions import timestamps_deepsqueak_to_datetime, datetime_to_epoch
+from code.classes.dataframe_extension import Dataframe
 """
 what do we have:
 - matching dates, - files from deepsqueak per location that contain those mathcing dates, -agouti rows that contain that date
 """
 
-def deepsqueak_observations(path_deployments, path_deepsqueak_data, interval_seconds, location_dataset):
+def deepsqueak_observations(location_files, interval_seconds):
     """
     interval is what amounts to one 1 sighting
     Returns dataframe with locationName, filename, total observations per file and timestamps
     Also writes it to a csv file.
     """
-    location_files: dict[str, list[str]] = deepsqueak_files(path_deployments, location_dataset, path_deepsqueak_data)
-
     filenames, total_observations_files, locations, timestamps   = [], [], [], []
 
     total_length_observations = 0
@@ -53,16 +50,16 @@ def deepsqueak_observations(path_deployments, path_deepsqueak_data, interval_sec
     df = pd.DataFrame(dictionary)
     df = df.sort_values('locationName')
     df.to_csv(path, index=False)
+    data = Dataframe(df)
     
-    return df
+    return data
 
-def agouti_observations(path_deployments, path_observations, location_dataset, path_media, folder_deepsqueak, interval_seconds):
+def agouti_observations(locations_rows, interval_seconds):
     """
     interval is what amounts to one 1 sighting
     Returns dataframe with locationName, filename and timestamps
     Also writes it to a csv file.
     """
-    locations_rows = agouti_rows(path_deployments, path_observations, path_media, location_dataset, folder_deepsqueak)
     locations, filenames, timestamps   = [], [], []
 
     for location in locations_rows.keys():
@@ -94,10 +91,5 @@ def agouti_observations(path_deployments, path_observations, location_dataset, p
     df = pd.DataFrame(dictionary)
     df = df.sort_values('locationName')
     df.to_csv(path, index=False)
-    
-    return df
-
-def hits(path_deployments, path_observations, location_dataset, path_media, folder_deepsqueak, interval_seconds):
-    deepsqueak_df = deepsqueak_observations(path_deployments, folder_deepsqueak, interval_seconds, location_dataset)
-    agouti_df = agouti_observations(path_deployments, path_observations, location_dataset, path_media, folder_deepsqueak, interval_seconds)
-    return [agouti_df, deepsqueak_df]
+    data = Dataframe(df)
+    return data

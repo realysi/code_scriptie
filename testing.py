@@ -1,4 +1,4 @@
-from code.deepsqueak.info_data import info_per_location, total_runtime
+from deepsqueak.data import info_per_location, total_runtime
 from code.matchingdates import matching_dates
 from code.files_matchingdates import deepsqueak_files, agouti_rows
 from code.hits import deepsqueak_observations, agouti_observations
