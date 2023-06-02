@@ -15,7 +15,7 @@ the day before to 5:00 is a possible recording.
 """
 
 #AT THE MOMENT NOT TAKING START AND END DATES WITH AS DAYS OF RECORDING AGOUTI (WHICH IT PROBABLY IS) In DATES_BETWEEN()
-def matching_dates(agouti_runtime: Dataframe, deepsqueak_runtime: Dataframe) -> dict[str, list[str]]: #bvb {flevopark_7 : ['2021-09-17', etc}
+def matching_dates(agouti_runtime: Dataframe, deepsqueak_runtime: Dataframe, path_results) -> dict[str, list[str]]: #bvb {flevopark_7 : ['2021-09-17', etc}
     """
     Returns dictionary with location as key and the matching dates for that location as values
     {location: [date, date]}. Also writes it to a csv file: matchingDates
@@ -23,7 +23,7 @@ def matching_dates(agouti_runtime: Dataframe, deepsqueak_runtime: Dataframe) -> 
     agouti_data = agouti_recording_dates(agouti_runtime)
     deepsqueak_data = deepsqueak_recording_dates(deepsqueak_runtime)
     matching_dates: dict[str, list[str]]  = find_dates(agouti_data, deepsqueak_data)
-    matching_dates_csv(matching_dates)
+    matching_dates_csv(matching_dates, path_results)
     return matching_dates
 
 #1
@@ -112,7 +112,7 @@ def find_dates(dict_agouti_dates, dict_deepsqueak_dates) -> dict[str, list[str]]
     return my_dict #bvb {flevopark_7 : ['2021-09-17', etc}
     
 #6
-def matching_dates_csv(dict_shared_dates): #bvb {flevopark_7 : ['2021-09-17', etc}
+def matching_dates_csv(dict_shared_dates, path_results): #bvb {flevopark_7 : ['2021-09-17', etc}
     """
     Writes the data stored in a dictionary from find_dates() to a csv format.
     """
@@ -126,7 +126,7 @@ def matching_dates_csv(dict_shared_dates): #bvb {flevopark_7 : ['2021-09-17', et
     dictionary = {'matching_date': values, 'locationName': locations}
     df = pd.DataFrame(dictionary)
     df = df.sort_values('locationName')
-    df.to_csv("/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/data/matchingDates.csv", index=False)
+    df.to_csv(f"{path_results}/data/matching_dates.csv", index=False)
 
 
 

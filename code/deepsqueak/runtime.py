@@ -4,7 +4,7 @@ from code.read_data import read_csv
 import pandas as pd
 from code.classes.dataframe_extension import Dataframe
 
-def runtime(path_folder, location_data):
+def runtime(path_folder, path_results):
     """
     Creates a csv(runtime_flevopark) with information of each recording. LocationName | start_recording | end_recording | runtime (seconds)
     """
@@ -26,7 +26,7 @@ def runtime(path_folder, location_data):
     data = {'locationName': location, 'start': starttimes, 'end': endtimes, 'runtime (sec)': runtime} 
     df = pd.DataFrame(data)
     df = df.sort_values('locationName')
-    path = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/deepsqueak/runtime_{location_data}.csv"
+    path = f"{path_results}/deepsqueak/runtime.csv"
     df.to_csv(path, index=False)
     data = Dataframe(df)
     return data

@@ -5,13 +5,13 @@ import pandas as pd
 """
 This is not set for processing the data of flevopark only (doesn't use ID but locationName)!!!
 """
-def filter_data_agouti(path_observations: str, path_media: str, path_deployments: str, location_dataset: str) -> Dataframe:
+def filter_data_agouti(path_observations: str, path_media: str, path_deployments: str, location_dataset: str, path_results) -> Dataframe:
     """
     Contains functions above.
     filters observations data, links observation and media data and writes it to new csv file.
     """
     filtered_data = add_media_data(path_media, path_observations, path_deployments, location_dataset)
-    path_final_data = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/final/data_{location_dataset}.csv"
+    path_final_data = f"{path_results}/agouti/filtered.csv"
     filtered_data.df = filtered_data.df.sort_values('locationName')
     filtered_data.df.to_csv(path_final_data, index=False)
     return filtered_data
