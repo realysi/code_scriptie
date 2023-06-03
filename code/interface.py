@@ -1,15 +1,16 @@
 import os
 import glob
 import shutil
+import sys
 
-def clear_results():
+def clear_folders(directory: str):
     """
     Removes the generated results.
     """
     try:
         current_directory = os.getcwd()
-        results_directory = f"{current_directory}/results"
-        folders = glob.glob(f'{results_directory}/*')
+        desired_directory = f"{current_directory}/{directory}"
+        folders = glob.glob(f'{desired_directory}/*')
         for folder in folders:
             shutil.rmtree(folder)
         """for folder in folders:
@@ -19,12 +20,14 @@ def clear_results():
     except PermissionError:
         print("permissionError: Your terminal/IDE does not have the permission to delete files. You can change this in the settings of your operating system")
 
-def agouti_data(source_directory: str, name: str):
+
+
+def move_data(source_directory: str, agouti_or_deepsqueak, name: str):
     """
     Moves the files from the agouti opened zip to the data under a specified name
     """
     current_directory = os.getcwd()
-    destination_directory = f"{current_directory}/data/agouti/{name}"
+    destination_directory = f"{current_directory}/data/{agouti_or_deepsqueak}/{name}"
     os.makedirs(destination_directory, exist_ok=True)
     files = glob.glob(f'{source_directory}/*')
     if len(files) == 0:
@@ -46,7 +49,42 @@ def results_directories(name, interval_agouti, interval_deepsqueak, inverval_ove
         os.makedirs(path, exist_ok=True)
     return directory_path
 
+def info():
+    message = """
+File: main.py
 
+flags: 
+-rr to remove the results generated in previous runs
+-rd to remove the data used in previous runs
+-info te gain acces to this info screen.
+
+Usage program:
+1. Fill in the path of where the agouti and deepsqueak folders (unzipped) are stored (problems could arise if this folder is in the downloads folder).
+2. Fill in location and name of your dataset.
+3. Determine what intervals you want to use for the agouti, deepsqueak and overlap between those two observations.
+4. Run the program by python3 main.py --flag if wanted.
+"""
+    print(message)
+
+def flags():
+    commands =['-rr', '-rd', '-info']
+    if len(sys.argv) > 4:
+        print("Wrong Usage: No more possbilities than to use two flags at the same time (-rr, -rd, -info)")
+        raise SystemExit
+    else:
+        commands_given = sys.argv[1:]
+        for i in commands_given:
+            if '-' not in i:
+                raise SystemExit(f"Wrong usage: Use -{i} instead of {i} to indicate usage of flag. For more info, see -info.")
+            if i not in commands:
+                raise SystemExit(f"There is no flag called {i}. See -info for more information about flag uses.")      
+        for i in commands_given:
+            if i == '-rr':
+              clear_folders('results')
+            elif i == '-rd':
+                clear_folders('data')
+            elif i == '-info':
+                info()
 
 
 """

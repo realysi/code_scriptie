@@ -15,7 +15,7 @@ def total_runningtime(path_deployments, location_dataset, path_results):
     data_deployments.calculate_difference_datetime('start_utc', 'end_utc', 'running_time(sec)')
     data_deployments.keep_relevant_columns(['deploymentID', 'start_utc', 'end_utc', 'locationName', 'running_time(sec)', 'longitude', 'latitude' ])
     data_deployments.df = data_deployments.df.sort_values('locationName')
-    path_running_times = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/runtime/runtime_{location_dataset}.csv"
+    path_running_times = f"/Users/yanickidsinga/Documents/GitHub/code_scriptie/results/agouti/runtime_{location_dataset}.csv"
     path_running_times = f"{path_results}/agouti/runtime.csv"
     data_deployments.df.to_csv(path_running_times, index=False)
     return data_deployments

@@ -1,7 +1,3 @@
+from code.check import check_deepsqueak_folder
 
-
-a = '2021-22-13 45:32:14'
-b = '2021-22-13'
-
-if a.split(" ")[0] in b:
-    print('yes')
+check_deepsqueak_folder('/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/flevopark_csv')
