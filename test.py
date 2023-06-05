@@ -1,3 +1,2 @@
-from code.check import check_deepsqueak_folder
-
-check_deepsqueak_folder('/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/Deepsquak/flevopark_csv')
+positions = list(range(len([1,2,3])))
+print(positions)

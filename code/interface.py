@@ -81,10 +81,13 @@ def flags():
         for i in commands_given:
             if i == '-rr':
               clear_folders('results')
+              raise SystemExit
             elif i == '-rd':
                 clear_folders('data')
+                raise SystemExit
             elif i == '-info':
-                info()
+                info() 
+                raise SystemExit
 
 
 """

@@ -11,6 +11,7 @@ Class to add functions to pandas dataframe
 class Dataframe:
     def __init__(self, dataframe):
         self.df: pd.DataFrame = dataframe
+        self.dictionary = {} #name: dictionary
 
     def calculate_difference_datetime(self, columnname1, columnname2, desired_name_column):
         differences = []

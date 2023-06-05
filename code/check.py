@@ -21,7 +21,6 @@ def check_agouti_folder(path_folder_agouti):
     if checks is good, return list with paths [media, deployments, observations]
     """
     files_in_folder = glob.glob(f'{path_folder_agouti}/*')
-    print(files_in_folder)
     if f'{path_folder_agouti}/deployments.csv' and f'{path_folder_agouti}/media.csv' and f'{path_folder_agouti}/observations.csv' not in files_in_folder:
         raise Exception("The agouti data does not contain the three required csv files: media.csv, deployments.csv & observations.csv")
     else:
@@ -34,9 +33,9 @@ def check_deepsqueak_columns(path_folder_deepsqueak):
     """
     #do this were deepsqueak data gets processed --> check for name in folders location_cameraID_audio_1_year-month-day_hour-minute-seconds_(0) etc (dit is enige belangrijke)
     column_names_required = ['Box_1','Box_2','Box_3','Box_4','Score','Type','Accept']
-    files_in_folder = glob.glob(f'{path_folder_deepsqueak}/*')
+    files_in_folder = glob.glob(f'{path_folder_deepsqueak}/*.csv')
     for file_name in files_in_folder:
-        file_data = pd.read_csv(f"{file_name}")
+        file_data = pd.read_csv(file_name)
         column_names_file = list(file_data.columns)
         if column_names_required != column_names_file:
             raise Exception("The csv file does either not have the following columns in the correct order, or are missing them al at: 'Box_1','Box_2','Box_3','Box_4','Score','Type','Accept' ")
@@ -46,7 +45,7 @@ def check_media_columns(path_media):
     checks if the media.csv file contains the right columns
     """
     columns_names_required = ['sequenceID', 'fileName']
-    media_data = pd.read_csv(path_media)
+    media_data = pd.read_csv(path_media, low_memory=False)
     column_names_file = list(media_data.columns)
     for column in columns_names_required:
         if column not in column_names_file:

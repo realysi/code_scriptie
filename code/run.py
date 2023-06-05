@@ -11,7 +11,7 @@ from code.files_matchingdates import agouti_rows, deepsqueak_files
 from code.hits import deepsqueak_observations, agouti_observations
 
 from code.overlaps import chances
-from code.interface import clear_folders, results_directories, agouti_data, info, flags
+from code.interface import clear_folders, results_directories, info, flags
 from code.check import check
 import sys
 import os
@@ -25,8 +25,8 @@ name_dataset: str = 'hij'
 INTERVAL_AGOUTI: int = 0
 INTERVAL_DEEPSQUEAK: int = 0
 INTERVAL_OVERLAP: int = 0
-
-def run():
+"""
+def run(paths_agouti, interval_agouti, interval_deepsqueak, interval_overlap):
     #agouti_paths('/Users/yanickidsinga/Documents/GitHub/code_scriptie/data/agouti/Artis')
     location: str = input("location: ")
     interval: int = int(input("Interval (seconds): "))
@@ -56,3 +56,4 @@ def run():
 
     #overlaps
     chances(observations_deepsqueak, observations_agouti, interval_camera_audio )
+"""
