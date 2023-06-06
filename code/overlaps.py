@@ -8,18 +8,21 @@ import pandas as pd
 
 
 
-def chances(deepsqueak_observations: Dataframe, agouti_observations: Dataframe, interval):
+def chances(deepsqueak_observations: Dataframe, agouti_observations: Dataframe, interval, path_to_results):
     ds_observations = deepsqueak_observations
     ag_observations = agouti_observations
 
     total_deepsqueak_observations = len(ds_observations.df)
     total_agouti_observations = len(ag_observations.df)
 
-    audio_at_camera = 0
-    camera_at_audio = 0
 
+    my_data = {} #{location: [chance_audio_atcamera, chance_camera_ataudio]}
+    my_info = {} #{location: [agouti_observations, deepsqueak_observations]}
     locations = list(set(ag_observations.df['locationName'].tolist())) #locations in agouti
     for location in locations:
+        audio_at_camera = 0
+        camera_at_audio = 0
+
         intervals_audio_at_camera = []
         intervals_camera_at_audio = []
 
@@ -50,17 +53,20 @@ def chances(deepsqueak_observations: Dataframe, agouti_observations: Dataframe, 
                     camera_at_audio += 1
                     break
 
+        my_info.update({location: [len(agou_observations), len(deeps_observations)]})
 
+        chance_audio_atcamera_location = audio_at_camera / len(agou_observations) * 100 #in percentages
+        chance_camera_ataudio_location = camera_at_audio / len(deeps_observations) * 100 #in percentages
+        my_data.update({location: [len(agou_observations), len(deeps_observations), round(chance_audio_atcamera_location, 2), round(chance_camera_ataudio_location, 2)]})
 
+    my_data = dict(sorted(my_data.items()))
+    txt_file = open(f'{path_to_results}/data/statistics.txt', 'w')
+    txt_file.writelines(['Statistics.txt\n\n', 'This file contains statistics about the data with the given parameters (intervals).\n\n'])
+    total_observations = [f"total_camera_observations: {total_agouti_observations}\n", f"total_audio_observations: {total_deepsqueak_observations}\n\n"]
+    txt_file.writelines(total_observations)
 
-
-        #my_data.update({location: intervals})
-    chance_audio_atcamera = audio_at_camera / total_agouti_observations #in percentages
-    chance_camera_ataudio = camera_at_audio / total_deepsqueak_observations #in percentages
-    print(f'chance_audio_atcamera: {chance_audio_atcamera}')
-    print(audio_at_camera, total_agouti_observations)
-    print(f"chance camera at audio: {chance_camera_ataudio}")
-    print(camera_at_audio, total_deepsqueak_observations)
+    for location in my_data.keys():
+        txt_file.writelines([f"Location: {location}\t|", f"Camera observations: {my_data[location][0]} \t|", f"Audio observations: {my_info[location][1]} \t|",f"Chance audio hit around camera hit: {my_data[location][2]}%\t|",f"Chance camera hit around audio hit: {my_data[location][3]}%\n"])
 
 
 

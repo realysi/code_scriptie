@@ -29,16 +29,16 @@ path_folder_deepsqueak: str = '/Users/yanickidsinga/Documents/deepsqueak_flevopa
 name_dataset_agouti: str = ''
 name_dataset_deepsqueak: str = ''
 
-name_data = 'hoi'
+name_data = '2'
 
 #location of dataset
-location_data: str = 'amsterdao'
+location_data: str = 'amsterda'
 
 
 #interval in seconds
-INTERVAL_AGOUTI: int = 0
-INTERVAL_DEEPSQUEAK: int = 0
-INTERVAL_OVERLAP: int = 0
+INTERVAL_AGOUTI: int = 60
+INTERVAL_DEEPSQUEAK: int = 300
+INTERVAL_OVERLAP: int = 60
 
 
 def main():
@@ -73,14 +73,10 @@ def main():
     observations_deepsqueak = deepsqueak_observations(location_files_deepsqueak, INTERVAL_DEEPSQUEAK, path_to_results)
     observations_agouti = agouti_observations(locatoin_rows_agouti, INTERVAL_AGOUTI, path_to_results)
 
-    print('observations = done')
+    hour_day(observations_agouti, observations_deepsqueak, path_to_results)
 
-
-    hour_day(observations_agouti, observations_deepsqueak)
-
-    print("hour_day = done")
     #overlaps
-    chances(observations_deepsqueak, observations_agouti, INTERVAL_OVERLAP)
+    chances(observations_deepsqueak, observations_agouti, INTERVAL_OVERLAP, path_to_results)
 
 if __name__ == '__main__':
     main()

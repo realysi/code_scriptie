@@ -5,6 +5,7 @@ from code.classes.dataframe_extension import Dataframe
 import copy
 import datetime
 import matplotlib.pyplot as plt
+import pytz
 
 def total_observations(observation: pd.DataFrame):
     total_observations = len(observation['timestamps'].tolist())
@@ -46,9 +47,18 @@ def hours(data: Dataframe):
     for timestamp in timestamps_observations:
         # Convert the epoch timestamp to a UTC datetime object
         utc_datetime = datetime.datetime.utcfromtimestamp(timestamp)
+        amsterdam_tz = pytz.timezone('Europe/Amsterdam')
+        
+        amsterdam_tz = pytz.timezone('Europe/Amsterdam')
+        amsterdam_time = amsterdam_tz.localize(utc_datetime)
+
+        hour_extra_amsterdam = str(amsterdam_time).split('+')[1]
+        hour_extra_amsterdam = int(hour_extra_amsterdam.split(':')[0])
+
         utc_hour = utc_datetime.hour
-        #print(timestamp, utc_datetime, utc_hour) #nog weg
-        list_hours.append(utc_hour)
+        ams_hour = utc_hour + hour_extra_amsterdam
+
+        list_hours.append(ams_hour)
     return list_hours
 
 def amount_hours(hours: list):
@@ -63,10 +73,9 @@ def amount_hours(hours: list):
             if hour == i:
                 current_count += 1
         hours_spread.update({i: current_count/len(hours)})
-    print(hours_spread)
     return hours_spread
 
-def hour_day(data_agouti: Dataframe, data_deepsqueak: Dataframe):
+def hour_day(data_agouti: Dataframe, data_deepsqueak: Dataframe, path_results):
     #find out when converted to other timezones!!!!!!
     agouti_hours = hours(data_agouti)
     deepsqueak_hours = hours(data_deepsqueak)
@@ -98,33 +107,10 @@ def hour_day(data_agouti: Dataframe, data_deepsqueak: Dataframe):
     plt.xlabel("hour of day")
     plt.ylabel("proportion of observations")
     plt.legend(["agouti", 'deepsqueak'])
-    plt.show()
+    plt.title("daily activity pattern Rattus Norvegicus")
+    plt.savefig(f'{path_results}/data/daily activity pattern Rattus Norvegicus')
 
 
     'https://www.researchgate.net/figure/The-daily-activity-pattern-for-one-nocturnal-and-one-diurnal-animal-species-for-a-BCI_fig3_46588027'
 
 #recorded in utc + 1 --> now in utc --> change to amsterdam time
-
-
-# importing package
-import matplotlib.pyplot as plt
-import numpy as np
-  
-"""# create data
-x = np.arange(5)
-y1 = [34, 56, 12, 89, 67]
-y2 = [12, 56, 78, 45, 90]
-y3 = [14, 23, 45, 25, 89]
-width = 0.2
-  
-# plot data in grouped manner of bar type
-plt.bar(x-0.2, y1, width, color='cyan')
-plt.bar(x, y2, width, color='orange')
-plt.bar(x+0.2, y3, width, color='green')
-plt.xticks(x, ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'])
-plt.xlabel("Teams")
-plt.ylabel("Scores")
-plt.legend(["Round 1", "Round 2", "Round 3"])
-plt.show()
-
-plt.bar()"""
