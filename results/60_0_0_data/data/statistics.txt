@@ -1,0 +1,19 @@
+Statistics.txt
+
+This file contains statistics about the data with the given parameters (intervals).
+
+total_camera_observations: 412
+total_audio_observations: 217964
+
+Location: flevopark_1	|Camera observations: 11 	|Audio observations: 7759 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_10	|Camera observations: 54 	|Audio observations: 3749 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_11	|Camera observations: 42 	|Audio observations: 2436 	|Chance audio hit around camera hit: 7.14%	|Chance camera hit around audio hit: 1.35%
+Location: flevopark_13	|Camera observations: 28 	|Audio observations: 55892 	|Chance audio hit around camera hit: 17.86%	|Chance camera hit around audio hit: 0.66%
+Location: flevopark_2	|Camera observations: 173 	|Audio observations: 13568 	|Chance audio hit around camera hit: 6.36%	|Chance camera hit around audio hit: 2.0%
+Location: flevopark_3	|Camera observations: 15 	|Audio observations: 10466 	|Chance audio hit around camera hit: 6.67%	|Chance camera hit around audio hit: 0.03%
+Location: flevopark_4	|Camera observations: 14 	|Audio observations: 12990 	|Chance audio hit around camera hit: 14.29%	|Chance camera hit around audio hit: 0.02%
+Location: flevopark_5	|Camera observations: 13 	|Audio observations: 44449 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_6	|Camera observations: 22 	|Audio observations: 6548 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_7	|Camera observations: 7 	|Audio observations: 3683 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_8	|Camera observations: 31 	|Audio observations: 13837 	|Chance audio hit around camera hit: 9.68%	|Chance camera hit around audio hit: 0.22%
+Location: flevopark_9	|Camera observations: 2 	|Audio observations: 38365 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%

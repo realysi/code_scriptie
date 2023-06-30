@@ -36,7 +36,8 @@ def agouti_rows(dates: dict[str, list[str]], agouti_data: dict[str, pd.DataFrame
     {location: pd.Dataframe rows}
     """
     my_dict = {}
-    for location in dates.keys():
+    locations = list(dates.keys())
+    for location in locations:
         matching_dates_location: list = dates[location]
         rows_with_matching_location: pd.DataFrame = agouti_data[location]
         agouti_dates = []

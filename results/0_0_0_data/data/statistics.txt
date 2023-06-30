@@ -1,0 +1,12 @@
+Statistics.txt
+
+This file contains statistics about the data with the given parameters (intervals).
+
+total_camera_observations: 54
+total_audio_observations: 22066
+
+Location: flevopark_11	|Camera observations: 13 	|Audio observations: 2436 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_2	|Camera observations: 34 	|Audio observations: 2104 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_3	|Camera observations: 1 	|Audio observations: 1601 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_4	|Camera observations: 4 	|Audio observations: 1094 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%
+Location: flevopark_5	|Camera observations: 2 	|Audio observations: 2918 	|Chance audio hit around camera hit: 0.0%	|Chance camera hit around audio hit: 0.0%

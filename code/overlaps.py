@@ -55,8 +55,14 @@ def chances(deepsqueak_observations: Dataframe, agouti_observations: Dataframe, 
 
         my_info.update({location: [len(agou_observations), len(deeps_observations)]})
 
-        chance_audio_atcamera_location = audio_at_camera / len(agou_observations) * 100 #in percentages
-        chance_camera_ataudio_location = camera_at_audio / len(deeps_observations) * 100 #in percentages
+        if len(agou_observations) != 0:
+            chance_audio_atcamera_location = audio_at_camera / len(agou_observations) * 100 #in percentages
+        else:
+            chance_audio_atcamera_location = 0
+        if len(deeps_observations) != 0:
+            chance_camera_ataudio_location = camera_at_audio / len(deeps_observations) * 100 #in percentages
+        else:
+            chance_camera_ataudio_location = 0
         my_data.update({location: [len(agou_observations), len(deeps_observations), round(chance_audio_atcamera_location, 2), round(chance_camera_ataudio_location, 2)]})
 
     my_data = dict(sorted(my_data.items()))

@@ -20,6 +20,7 @@ from code.check import check
 import sys
 import os
 from code.info import hour_day
+from code.dates import dates_study
 
 #absolute paths to data
 path_folder_agouti: str = '/Users/yanickidsinga/Documents/flevopark-20230202124032'
@@ -36,9 +37,9 @@ location_data: str = 'amsterda'
 
 
 #interval in seconds
-INTERVAL_AGOUTI: int = 60
-INTERVAL_DEEPSQUEAK: int = 300
-INTERVAL_OVERLAP: int = 60
+INTERVAL_AGOUTI: int = 0
+INTERVAL_DEEPSQUEAK: int = 0
+INTERVAL_OVERLAP: int = 300
 
 
 def main():
@@ -63,8 +64,9 @@ def main():
     files_per_location: dict[str, list[str]] = deepsquakfiledata_to_dict(path_folder=path_folder_deepsqueak)
 
     #matchingdates
-    dates = matching_dates(runtime_agouti, runtime_deepsqueak, path_to_results)
+    #dates = matching_dates(runtime_agouti, runtime_deepsqueak, path_to_results)
 
+    dates = dates_study(runtime_agouti, runtime_deepsqueak, path_to_results)
     #filesmatchingdates
     locatoin_rows_agouti = agouti_rows(dates, agouti_data)
     location_files_deepsqueak = deepsqueak_files(dates, files_per_location)

@@ -106,7 +106,7 @@ def hour_day(data_agouti: Dataframe, data_deepsqueak: Dataframe, path_results):
     plt.bar(x=postions_deepsqueak, height=deepsqueak_hours_values, width=bar_width, tick_label=deepsqueak_hours_keys, color='gray')
     plt.xlabel("hour of day")
     plt.ylabel("proportion of observations")
-    plt.legend(["agouti", 'deepsqueak'])
+    plt.legend(["CT", 'PAM'])
     plt.title("daily activity pattern Rattus Norvegicus")
     plt.savefig(f'{path_results}/data/daily activity pattern Rattus Norvegicus')
 
